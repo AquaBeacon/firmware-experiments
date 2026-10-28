@@ -1,0 +1,16 @@
+.pio/
+reports/raw/
+__pycache__/
+include/secrets.h
+
+build/
+
+# Local captures, credentials, and development environments
+data/
+.venv/
+.tools/
+.env
+.env.*
+!.env.example
+*.pem
+*.key

@@ -1,0 +1,587 @@
+#pragma once
+static const char WEB_PAGE[]=R"AQWEB(<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AquaBeacon</title>
+<style>:root{--ink:#183944;--muted:#536b71;--paper:#edf3f2;--panel:#ffffff;--accent:#087d86;--danger:#a93025;--danger-surface:#fff1ef;--good:#067467;--chart:#277cbe;--space-xs:8px;--space:12px;--space-md:18px;--space-lg:24px;--radius:12px;--control-radius:8px;--body:system-ui,sans-serif;--heading:"Yu Gothic",system-ui,sans-serif;--numeric:ui-monospace,monospace;--body-size:16px;--title-size:30px;--heading-size:20px;font-family:var(--body);color:var(--ink);background:var(--paper)}*{box-sizing:border-box;scroll-margin-top:160px}html{scroll-padding-top:160px}body{max-width:1100px;margin:var(--space-lg) auto;padding:0 var(--space-md);font-size:var(--body-size)}header{border-bottom:2px solid var(--accent);margin-bottom:var(--space-md)}h1,h2,summary{font-family:var(--heading)}h1{font-size:var(--title-size)}h2,summary{font-size:var(--heading-size)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)}article,details{background:var(--panel);padding:var(--space-lg);border-radius:var(--radius);margin-bottom:var(--space-md)}dl{display:grid;grid-template-columns:1fr 1fr;gap:var(--space);margin:0}dt{color:var(--muted)}dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;min-width:0}.note{font-size:14px;color:var(--muted);line-height:1.7}.bad{color:var(--danger)}.good{color:var(--good)}#range{font-size:22px}input{font:inherit;max-width:100%;min-height:44px;border:1px solid var(--accent);border-radius:var(--control-radius);padding:var(--space-xs);color:var(--ink);background:var(--panel)}.parent-set label{display:block}.parent-set input:not([type="checkbox"]){width:100%}input[type="checkbox"]{min-height:24px;width:24px;vertical-align:middle}button,select{font:inherit;min-height:44px;border:1px solid var(--accent);border-radius:var(--control-radius);padding:var(--space-xs) var(--space);background:var(--panel);color:var(--ink);max-width:100%}button{cursor:pointer}button.primary,button[aria-selected="true"]{background:var(--accent);color:var(--panel)}button.stop{border-color:var(--danger);color:var(--danger)}button:disabled{opacity:.65;cursor:wait}button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.actions,.tabs{display:flex;flex-wrap:wrap;gap:var(--space);margin:var(--space) 0}.tabs{border-bottom:2px solid var(--accent);padding-bottom:var(--space)}summary{cursor:pointer;min-height:44px}#message{min-height:var(--space-lg);white-space:pre-line;margin:var(--space-xs) 0}#loglist{display:grid;gap:var(--space-xs)}.file{display:flex;align-items:center;justify-content:space-between;gap:var(--space);overflow-wrap:anywhere}.file span{min-width:0}canvas{width:100%;height:240px}progress{width:100%;height:20px}.battery{margin-bottom:var(--space-md)}.battery p{margin:var(--space-xs) 0}.battery meter{width:100%;height:24px}.console-bar{position:sticky;top:0;z-index:2;border:1px solid var(--accent);padding:var(--space);background:var(--panel);margin-bottom:var(--space)}.console-bar .actions{margin:0}.console-bar #message{max-height:110px;overflow:auto}.cal-steps{line-height:1.8;padding-left:var(--space-lg)}[hidden]{display:none!important}@media(max-width:650px){.grid{grid-template-columns:1fr}article,details{padding:var(--space-md)}body{padding:0 var(--space);margin-top:var(--space)}.actions button{flex:1 1 42%}.file{display:block}.file button{margin:var(--space-xs) 0}.tabs{gap:var(--space-xs)}.tabs button{flex:1 1 30%;padding:var(--space-xs)}.console-bar{position:sticky}dl{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}.rtk-picker input,.rtk-picker select{width:100%;min-width:0}.rtk-picker label{display:block;margin-top:var(--space)}.rtk-picker dl{margin-top:var(--space);gap:var(--space-xs)}.rtk-picker p{overflow-wrap:anywhere}.rtk-picker select{white-space:normal}.rtk-picker :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.device-grid{display:grid;align-items:start;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space)}.device-card{padding:var(--space-md);border:2px solid transparent;min-width:0}.device-card summary{font-family:var(--body);font-size:var(--body-size);list-style:none}.device-card summary::-webkit-details-marker{display:none}.device-card summary>span{display:block}.device-name{font-family:var(--heading);font-size:var(--heading-size);font-weight:700}.device-state{font-weight:700;margin:var(--space-xs) 0}.device-card .battery{margin:var(--space-xs) 0}.device-card .battery span{display:block}.device-card .battery meter{height:var(--space-md)}.device-card dl{margin-top:var(--space-md)}.device-card .device-hint{font-size:14px;color:var(--muted);margin-top:var(--space-xs)}.device-issue{font-size:14px;overflow-wrap:anywhere;margin-top:var(--space-xs)}.attention{border:2px solid var(--danger);background:var(--danger-surface)}.attention .device-state,.attention .device-issue{color:var(--danger)}.sd-card{border:2px solid transparent;min-width:0}.sd-card.attention{border-color:var(--danger)}.fold-panel>summary{font-size:var(--heading-size)}.fold-panel>summary .compact{display:block;font-family:var(--body);font-size:14px;font-weight:400;color:var(--muted);margin-top:var(--space-xs)}.fold-panel>summary .compact.bad{color:var(--danger)}.device-card[open] .device-hint{display:none}.device-card[open] summary{margin-bottom:var(--space)}.sd-grid{display:grid;align-items:start;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space)}.sd-grid .actions button{width:100%}.sd-grid .actions{flex-direction:column}.clock-overview{line-height:1.7}#clockOverview{white-space:pre-line}button:hover:not(:disabled){box-shadow:inset 0 0 0 1px var(--accent)}button:active:not(:disabled){background:var(--paper)}button:disabled{cursor:not-allowed}@media(max-width:800px){.device-grid,.sd-grid{grid-template-columns:1fr}}@media(max-width:650px){.device-card{padding:var(--space)}.device-card .battery meter{max-width:100%}.device-card>summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:var(--space)}.device-name,.device-state{margin:0}.device-state{text-align:right}.device-card summary>.battery,.device-storage,.device-issue,.device-hint{grid-column:1/-1}.device-card .battery{margin:0}.device-card .battery meter{height:var(--space-xs)}.device-card .device-hint{margin:0}.device-card summary>.device-storage{grid-column:1}.device-card summary>.device-issue{grid-column:2;text-align:right;margin:0}header h1{font-size:var(--heading-size);margin:var(--space) 0}header>p:first-of-type{display:none}.console-bar #message{font-size:14px}.device-grid{gap:var(--space-xs)}.device-card{margin-bottom:0}}
+.body-current{border-left:4px solid var(--accent);padding:var(--space);font-weight:700;background:var(--paper)}.body-result{white-space:pre-line;overflow-wrap:anywhere}.body-result:empty{display:none}#bodyRequirements li{margin-bottom:var(--space)}#bodyRequirements button{margin-left:var(--space-xs)}#bodyPanel section{margin-top:var(--space-lg)}#bodyNext{font-size:var(--heading-size);font-weight:700;line-height:1.7}#bodyPhase{width:100%}
+</style>
+<header><p>AQUABEACON · SYSTEM STATUS</p><h1>AquaBeacon 親機コンソール</h1><p id="connection">接続中…</p></header>
+<div class="console-bar"><div class="actions"><button class="stop" id="stopRange">測距送信を停止</button></div><p id="message" role="status" aria-live="polite">新しい実験では親子とも新規ファイルを作成します。校正・カメラ動作収録の未完了でも測距送信と受信ゲイン確認ができます。個別校正・機体姿勢の収録中は先に終了してください。</p></div><nav class="tabs" role="tablist" aria-label="コンソールの機能"><button id="tab-status" role="tab" aria-controls="panel-status" aria-selected="true" tabindex="0">状態</button><button id="tab-experiment" role="tab" aria-controls="panel-experiment" aria-selected="false" tabindex="-1">実験・測距</button><button id="tab-sensors" role="tab" aria-controls="panel-sensors" aria-selected="false" tabindex="-1">センサー校正</button><button id="tab-clock" role="tab" aria-controls="panel-clock" aria-selected="false" tabindex="-1">時刻・位置</button><button id="tab-logs" role="tab" aria-controls="panel-logs" aria-selected="false" tabindex="-1">ログ・SD</button></nav><main><section id="panel-status" role="tabpanel" aria-labelledby="tab-status"><div class="device-grid"><details id="parentCard" class="device-card attention"><summary><span class="device-name">親機</span><span id="parentState" class="device-state">未取得</span><span class="battery" id="parentBattery">電池：未取得</span><span id="parentStorage" class="device-storage">SD：未取得</span><span id="parentIssue" class="device-issue">状態を確認中</span><span class="device-hint">詳細を開く ＋</span></summary><p id="parentIssueDetails" class="bad"></p><dl id="parent"></dl><p class="note">温度・水圧センサ、LCDは未接続。親機GNSSの状態は時刻・位置タブを参照。</p></details><details id="sprCard" class="device-card attention"><summary><span class="device-name">Spresense</span><span id="sprState" class="device-state">未取得</span><span class="battery">電池：計測情報なし</span><span id="sprStorage" class="device-storage">SD：未取得</span><span id="sprIssue" class="device-issue">状態を確認中</span><span class="device-hint">詳細を開く ＋</span></summary><p id="sprOverview" role="status">未取得</p><p id="sprIssueDetails" class="bad"></p><dl id="sprOverviewDetails"></dl><p class="note">記録開始・停止・SD復旧は「ログ・SD」で操作できます。Spresenseは電池計測値を送信していません。</p></details><details id="childCard" class="device-card attention"><summary><span class="device-name">子機</span><span id="childState" class="device-state">未取得</span><span class="battery" id="childBattery">電池：未取得</span><span id="childStorage" class="device-storage">SD：未取得</span><span id="childIssue" class="device-issue">状態を確認中</span><span class="device-hint">詳細を開く ＋</span></summary><p id="childIssueDetails" class="bad"></p><dl id="child"></dl><p class="note">漏水表示は電極入力の状態です。電極線の断線は検出できません。音響入力の変化だけでは受信成功を保証しません。</p></details></div><details class="fold-panel"><summary>距離測位 <span id="range" class="compact">確認中</span></summary><p id="timing"></p><p class="note">距離は未校正の参考値です。近接配置の早期反応は受信の確認に使用できますが、距離精度は未検証です。子機は親機との相対同期に加えてUTCを受信します。時刻源とRTC保存状態は時刻・位置タブを確認してください。</p></details><details class="fold-panel"><summary>電池の目安・記録ファイル</summary><p class="note">電池：親子とも標準3S LiPo・11.1 V・2200 mAh（24.42 Wh）。残量は10.5 Vを0%、12.6 Vを100%とする電圧の簡易目安です。実際の残容量とは異なり、負荷や温度で変動します。10.8 V以下で低電圧を表示します。セル別電圧・残り時間は未測定です。</p><p class="note" id="files"></p></details></section><section id="panel-experiment" role="tabpanel" aria-labelledby="tab-experiment" hidden><article aria-label="実験操作"><h2>実験操作</h2><div class="actions"><button class="primary" data-action="new">新しい実験・記録開始</button><button data-action="startRange" data-requires-child="1" disabled>測距送信を開始</button></div><div class="actions"><button data-action="resume">親子の記録を再開</button><button class="stop" data-action="stopRecord">実験終了・親子の記録を停止</button></div></article><article id="rangePanel"><h2>算出距離</h2><p id="experimentRange" role="status">未取得</p><dl id="rangeDetails"></dl><p class="note">停止後も最後の測定を保持します。無受信・取得異常・補正後が負の値では距離を表示しません。近接値は回り込み・反射を含む可能性があり、距離精度は未検証です。</p><details><summary>既知距離で測距を校正</summary><p class="note">振動子間を既知距離で固定し、有効な31件から時刻差の中央値と固定遅延を求めます。1点校正なので音速は推定しません。水温・塩分等に合う音速を入力してください。補正は周波数・送信パターンの一致時だけ適用します。配線・ゲイン・振動子・水条件を変えたら再校正してください。</p><label for="rangeKnownCm">振動子間の既知距離（cm）</label><input id="rangeKnownCm" type="number" min="0.1" max="3000" step="0.1" value="10"><label for="rangeSpeed">計算に使う音速（m/s）</label><input id="rangeSpeed" type="number" min="1300" max="1700" step="0.1" value="1500"><label for="rangeFixed"><input id="rangeFixed" type="checkbox">入力した距離で固定し、水中の配置を確認しました</label><div class="actions"><button id="rangeCalStart" disabled>既知距離の測定を開始</button><button id="rangeCalSave" disabled>補正を親機SDへ保存・適用</button><button id="rangeCalCancel">測定を中止・候補を破棄</button><button id="rangeCalDisable" disabled>保存済み補正を無効にする</button></div><p id="rangeCalState" role="status">未取得</p><p id="rangeCalStats"></p><p class="note">完了すると送信を停止します。ばらつき等の条件を満たした候補だけ保存できます。再起動後の復元と、校正に使った10cm以外の距離でも検証してください。</p></details></article><details open><summary>測距・マルチパス記録の設定</summary><div class="actions"><label for="rangingRate">1秒間の送信回数</label> <select id="rangingRate"><option value="1">1回</option><option value="2">2回</option><option value="3">3回</option><option value="4">4回</option></select> <label for="acousticPattern">音響パターン</label> <select id="acousticPattern"><option value="0">単発・5波</option><option value="1">毎回変わる3連・64パターン</option></select> <label for="frequency">送信周波数 <select id="frequency"><option value="10000">10 kHz</option><option value="50000">50 kHz</option><option value="100000">100 kHz</option><option value="200000" selected>200 kHz</option></select></label><label for="observationSeconds">受信後の記録時間 <select id="observationSeconds"><option value="1">1秒</option><option value="2">2秒</option><option value="3" selected>3秒</option><option value="4">4秒</option><option value="5">5秒</option></select></label><label for="observationEvery">マルチパス記録頻度 <select id="observationEvery"><option value="0">無効</option><option value="1">毎回</option><option value="5">5回に1回</option><option value="10">10回に1回</option><option value="30" selected>30回に1回</option><option value="60">60回に1回</option><option value="300">300回に1回</option></select></label></div><div class="actions"><button data-action="acquisition">送信を停止して設定を適用</button></div><p class="note">回数は送信枠の設定です。観測中・操作通信中・応答遅延時は休止します。連続測距には観測記録を無効にしてください。3連は各5波の間隔を毎回変更します。64種類から選び、テザーで通知したパターンだけを採用します。同じパターンの再使用は4回/秒で最短16秒後です。反射の低減効果・距離精度は未検証です。</p><p id="acquisitionStatus" role="status">設定を確認中…</p><p id="observationStatus" role="status">観測状態を確認中…</p><p class="note">受信後の包絡線を20 kサンプル/秒と比較器のエッジ時刻で子機SDへ保存します。200 kHz等の搬送波そのものの波形ではありません。最初の送信を記録対象にし、その後は指定回数ごとに記録します。観測中は次の音響送信を休止し、終了後に設定した周期へ戻ります。記録時間・頻度を上げると保存負荷が増えます。設定は再起動で1回/秒・可変3連・200 kHz・3秒・30回に1回に戻ります。周波数ごとの振動子・回路の応答と距離精度は未検証です。</p></details><details><summary>受信ゲインの確認</summary><p class="note">60秒間、100 kサンプル/秒で受信電圧を取得し、各更新区間のピークを表示します。子機SD保存を一時停止し、終了後に再開します。ゲインの可変抵抗は手で調整してください。</p><div class="actions"><button data-action="gain" data-requires-child="1" disabled>60秒の受信グラフを開始</button><button id="cancelGain">受信確認を終了</button></div><p id="gainState">待機中</p><canvas id="rxChart" aria-label="受信電圧の推移"></canvas><p class="note">緑：ピーク、青：平均。単位mV（ADC入力・未校正）。受信判定は下の距離測位欄を参照してください。</p></details></section><section id="panel-sensors" role="tabpanel" aria-labelledby="tab-sensors" hidden>
+<article id="calibrationPreparation"><h2>校正は上から順に進めてください</h2><p class="note">準備 → 1. 親機IMU → 2. 親機磁気 → 3. 子機BNO → 4. 親機セット保存 → 5. 機体姿勢の収録・解析 → 6. 復元確認 → 毎回のカメラ動作収録 → 実験。保存済みで有効な項目は省略できます。子機は独立した校正なので、使わない場合は手順3を省略できます。</p><h2>準備：接続・SD・時刻を確認</h2><ol class="cal-steps"><li>「状態」で使う機器の接続とSDを確認します。SD異常があれば先に復旧してください。</li><li>測距送信を停止し、「ログ・SD」で校正する機器の保存停止完了を確認します。</li><li>IMU校正に使う地点の重力値・緯度を確認します。カメラとの時刻合わせも行う場合は「時刻・位置」で時刻源と同期状態を確認してください。</li></ol><p class="note">個別校正を保存・終了するごとに次へ進みます。画面の番号は案内順で、完了判定ではありません。個別センサの係数校正中は通常ログを止めます。手順5の機体姿勢収録では、通常ログに動きと時刻を残します。</p></article>
+<article><h2>機体の軸合わせを進める</h2><p>個別センサの補正を保存・適用した後、手順5で親機または子機を選んでください。手順5に開始できない理由と必要な操作を表示します。保存済みの個別補正をやり直す必要はありません。</p><p id="parentPreparation" role="status"></p><button data-action="prepareParent">手順5：軸合わせの準備を開く</button></article>
+<details id="sprCalibrationPanel" class="fold-panel"><summary>1. 親機 Spresense IMUの6姿勢校正 <span id="sprCalibrationCompact" class="compact">未取得</span></summary><p class="note">記録を停止してから、X・Y・Zの正負方向を順番に上へ向けて測定します。各姿勢で2秒落ち着かせてから10秒静止します。振動やデータ欠落がある区間は自動でやり直します。ジャイロは6姿勢と緯度から地球自転を残して補正します。Sony専用ツールとは別のソフトウェア補正で、IMU内部の係数は変更しません。</p><div class="actions"><label for="sprGravity">実施地点の重力値（m/s²）</label><input id="sprGravity" type="number" min="9.7" max="9.9" step="0.000001" value="9.80665"><label for="sprLatitude">実施地点の緯度（度）</label><input id="sprLatitude" type="number" min="-90" max="90" step="0.000001" placeholder="北緯は正・南緯は負"></div><div class="actions"><button disabled data-spr="calibration/start">6姿勢校正を開始</button><button disabled data-spr="calibration/save">測定結果をSDへ保存・適用</button><button disabled data-spr="calibration/end">校正モードを終了（補正を維持）</button><button id="sprNext" class="primary" disabled>保存済み補正を使って次へ</button></div><p id="sprCalibration" role="status">未取得</p><p id="sprCalibrationAdvice" role="status" aria-live="polite">状態を取得すると、次の動作と判定を表示します。</p><progress id="sprCalibrationProgress" max="100" value="0" aria-label="現在の姿勢の静止測定進捗" hidden></progress><dl id="sprCalibrationChecks"></dl><p class="note">判定通過はこの校正手順の条件を満たしたことを表します。補正後の実測精度は、校正に使っていない姿勢や基準と比較して確認してください。</p><div class="actions"><button disabled data-spr="calibration/pose/0">＋Xを上向きにして測定</button><button disabled data-spr="calibration/pose/1">−Xを上向きにして測定</button><button disabled data-spr="calibration/pose/2">＋Yを上向きにして測定</button><button disabled data-spr="calibration/pose/3">−Yを上向きにして測定</button><button disabled data-spr="calibration/pose/4">＋Zを上向きにして測定</button><button disabled data-spr="calibration/pose/5">−Zを上向きにして測定</button></div><p class="note">保存はSpresenseのSDに行います。通常記録を再開すると、生の値と補正後の値を両方ログに残します。校正中の測定波形・各姿勢の時刻は保存しません。補正済みの表示は精度合格を意味しません。公式のIMU内部校正を使う場合はSony専用ツールを使用してください。</p><details id="sprDisablePanel"><summary>詳細操作：補正を無効にする</summary><p class="note">校正を終える場合は、上の「保存済み補正を使って次へ」を押してください。この詳細操作は、補正を使わない状態をSDへ保存します。次の起動後も補正が無効になります。係数と過去のファイルは保持します。</p><label for="sprDisableConfirm"><input id="sprDisableConfirm" type="checkbox" disabled>補正を無効にして保存することを確認しました</label><div class="actions"><button class="stop" disabled data-spr="calibration/clear">補正を無効にしてSDへ保存</button></div></details><a href="https://developer.spresense.sony-semicon.com/ja/downloads/imu-calibration-tool/manual-version-2" target="_blank" rel="noopener">Sony公式手順を開く</a></details>
+<details id="magPanel" class="fold-panel"><summary>2. 親機 LIS3MDL 磁気校正 <span id="magCompact" class="compact">未取得</span></summary><p class="note">親機の3軸オフセットと倍率を補正します。開始すると測距と親機のSD記録（PPKを含む）を停止します。子機の記録は継続します。校正保存には親機SDが必要です。</p><div class="actions"><button id="magStart">親機の記録を停止して校正開始</button><button id="magSave" disabled>校正結果をSDへ保存・適用</button><button id="magEnd">校正を終了</button><button id="magReset">保存した補正を解除</button></div><p id="magState" role="status">未取得</p><p id="magAdvice" role="status" aria-live="polite">状態を取得すると、不足している保存条件を表示します。</p><dl id="magChecks"></dl><details><summary>磁気の数値・保存情報</summary><dl id="magProgress"></dl></details><ol><li>組み上げた親機を磁石・スピーカー・大きな金属から離します。</li><li>上下・左右・前後の向きを変えながら、全方向へゆっくり回します。水平面の8の字だけで終えないでください。</li><li>20秒以上・200サンプル以上、3軸の十分な変化と全8方向のデータが揃うと保存可能になります。</li><li>保存後に「校正を終了」を押し、次の項目へ進んでください。記録再開は手順6で行います。3分で自動終了します。</li></ol><p class="note">飽和が一度でもあると保存できません。磁気源から離して終了・再開始してください。再起動時は同じSDから保存済み補正を読み込みます。校正は軸別の簡易補正で、方位角の精度合格や軸間の歪み補正を保証しません。GNSSにはこの回転校正は不要です。アンテナ情報は時刻・位置タブで設定します。</p></details>
+<details id="bnoPanel" class="fold-panel"><summary>3. 子機 BNO085 キャリブレーション <span id="calCompact" class="compact">未取得</span></summary><p class="note">対象は子機のBNO085です。開始すると測距送信と子機SD記録を停止します。親機の記録は継続します。子機を使わない場合は省略できます。終了後は次の項目へ進み、記録再開は手順6で行ってください。</p><div class="actions"><button class="primary" data-action="calStart" data-requires-child="1" disabled>記録を停止して校正を開始</button><button data-action="calStatus" data-requires-child="1" disabled>校正状態を更新</button><button data-action="calSave" data-requires-child="1" disabled>校正データをBNOへ保存</button><button data-action="calEnd" data-requires-child="1" disabled>校正を終了</button></div><p id="calState" role="status" aria-live="polite">未取得。「校正状態を更新」で確認できます。</p><p id="calAdvice" role="status" aria-live="polite">子機の状態を取得してください。</p><dl id="calAccuracy"></dl><ol class="cal-steps"><li>組み上げた子機を、磁石・スピーカー・大きな金属から離して置きます。</li><li>4〜6方向に姿勢を変え、各姿勢で約1秒静止します。</li><li>手を離して台の上で約3秒静止します。水平である必要はありません。静止の進捗を確認してから磁気の回転へ進みます。0/3が続く場合は手で保持して小さくゆっくり動かした後、もう一度台に置いてください。</li><li>各軸で約180度回し、元へ戻します。1軸あたり約2秒を目安に繰り返します。</li><li>加速度・磁気が「中」以上で、ジャイロは「中」以上、または「低」でも3秒の静止確認があると、1秒の継続確認後に保存できます。「未校正」・更新停止のままでは保存できません。「保存」を押し、応答を確認してから「終了」を押します。</li></ol><p class="note">校正中はジャイロの手持ち動的校正と台上校正を有効にして設定を読み戻し、磁気レポートを50Hzにします。3秒の静止確認は今回の校正中のみ保持し、その後の磁気回転でやり直しません。状態0〜3はセンサー自身の判定で、静止確認や保存成功も角度精度の測定結果ではありません。姿勢は従来のGame Rotation Vectorのままで、磁北基準には変えません。保存はBNO内部のDCDへ行い、SDログは変更しません。終了操作は開始前の動的校正設定と磁気20Hzへ戻します。10分で自動終了しますが、復帰に失敗した場合は「校正を終了」で再試行してください。未保存の終了でもRAM上の補正は巻き戻らず、BNOの既存の自動保存設定も変えません。</p></details>
+<details id="parentSetPanel" class="fold-panel"><summary>4. 親機校正セットを保存 <span id="parentSetCompact" class="compact">未取得</span></summary><p id="parentSetStatus" role="status" aria-live="polite">未取得</p><p class="note">手順1・2の保存・終了後、現在のSpresense IMU・親機磁気の校正番号をセットに保存します。子機BNOはこのセットに含みません。センサ位置・姿勢の入力は不要です。</p><div class="actions"><button id="parentSetLoad">保存状態を読み直す</button><button id="parentSetSave" disabled>現在の個別校正をセットに保存</button></div><p id="parentSetMessage" role="status" aria-live="polite"></p><p class="note">「ログ・SD」で親機・Spresenseの記録を停止し、測距と個別校正を終了してから保存してください。個別校正をやり直したらセットも保存し直してください。保存後の記録再開は手動です。精度の実測合格を示すものではありません。</p></details>
+<details id="bodyPanel" class="fold-panel"><summary>5. 機体の軸合わせ・カメラ照合用収録</summary>
+<p>機体の前＝＋X・右＝＋Y・下＝＋Zにセンサの軸を合わせます。まず準備を確認し、4姿勢と動きを記録します。収録後のPC解析・結果保存までが軸合わせです。</p>
+<label for="bodyTarget">対象の機体</label> <select id="bodyTarget"><option value="p">親機（Spresense・磁気）</option><option value="c">子機（BNO085）</option></select>
+<p id="bodyState" class="body-current" role="status" aria-live="polite">収録状態不明：状態を更新してください</p>
+<p id="bodyAxes"></p><p id="bodyMessage" class="body-result" role="alert"></p>
+<label for="bodyMode">今回行う作業</label> <select id="bodyMode"><option value="0">初回・取付変更：4姿勢＋カメラ用動作</option><option value="1">保存済み軸を再利用：カメラ用動作のみ</option></select><p id="bodyReuseNote" class="note"></p>
+<section id="bodyPreparation" aria-label="収録前の準備"><h2>準備：開始できない理由を確認</h2><p id="bodyRequirementsSummary" role="status"></p><ul id="bodyRequirements" class="cal-steps"></ul>
+<div class="actions"><button id="bodyRefresh">準備・収録状態を更新</button><button id="bodyPrepareLog" disabled>選択した機体のログ記録を開始</button><button id="bodyPrepareSpr" disabled>Spresenseのログ記録を開始</button></div>
+<p id="bodyLogResult" role="status"></p><p class="note">この操作では通常ログを記録します。姿勢区間の収録は下のボタンで開始します。カメラは手動で撮影を開始してください。</p>
+<div class="actions"><button id="bodyStart" class="primary" aria-describedby="bodyStartReason" disabled>姿勢収録を開始</button></div><p id="bodyStartReason"></p></section>
+<section id="bodyRecording" aria-label="姿勢の収録"><h2>収録：姿勢と次の操作</h2><p id="bodyNext" role="status" aria-live="polite"></p><progress id="bodyProgress" max="5" value="0" aria-label="記録した区間数"></progress>
+<label for="bodyPhase">次に収録する区間</label> <select id="bodyPhase" disabled><option value="1">1. 水平・前向きの基準姿勢</option><option value="2">2. 基準から機首を上へ90度</option><option value="3">3. 基準から右側を上へ90度</option><option value="4">4. 基準から機尾を上へ90度</option><option value="5">5. カメラ照合用の回転</option></select>
+<div class="actions"><button id="bodyPhaseBegin" aria-describedby="bodyPhaseReason" disabled>この姿勢の記録を開始</button><button id="bodyPhaseEnd" aria-describedby="bodyPhaseReason" disabled>この姿勢の記録を終了</button><button id="bodyFinish" aria-describedby="bodyPhaseReason" disabled>全区間の収録を完了</button><button id="bodyCancel" class="stop" disabled>収録を中止してログを残す</button></div>
+<p id="bodyPhaseReason"></p><p id="bodyMotionGuide" role="status"></p><p id="bodyMotionCheck"></p><ol id="bodyWorkflowSteps" class="cal-steps"></ol></section>
+<details><summary>収録番号・保存状態の詳細</summary><dl id="bodyDetails"></dl></details>
+<details id="bodyAnalysis"><summary>収録後：PC解析と結果保存</summary><p>初回はログを回収してPCで軸変換を計算します。対象の記録と測距を停止してから、解析結果を保存してください。カメラ用動作のみの場合は軸結果の再保存は不要です。</p><label for="bodySolution">PCで作成した解析結果JSON</label><input id="bodySolution" type="file" accept=".json,application/json"><div class="actions"><button id="bodyImport" disabled>解析結果をSDへ新規保存</button></div><p class="note">生ログ・個別校正値は保持します。動画との時刻照合は撮影後の別処理です。収録完了は姿勢・同期精度の合格を意味しません。</p></details></details>
+<article id="calibrationFinish"><h2>6. 復元確認・実験へ</h2><ol class="cal-steps"><li>個別校正・軸変換を新しく保存した時は、安全停止して再起動し、同じSDからの復元を確認します。すでに有効な保存値を復元できていれば再測定は不要です。</li><li>親機セットの個別校正が「一致」することを確認します。これは精度の実測合格ではありません。</li><li>通常記録と撮影を開始し、手順5のカメラ用動作収録を毎回行います。収録完了後は再起動やファイル切替をせず、実験・測距へ進んでください。</li></ol><h2>カメラIMUとの時刻合わせ用の動き</h2><p class="note">カメラ撮影と機体の通常記録を両方開始してから、同じ機体に固定したカメラとIMUを一緒に、複数の軸で不規則にゆっくり回します。強い衝撃は避けてください。親機と子機はそれぞれのカメラと対応させます。開始側と終了側に動きを残すと、時刻差や時計のずれを調べる材料になります。</p><p class="note">時刻照合は手順5の収録とPC解析で行います。未編集動画に対応するカメラIMUの時刻付きCSVが必要です。MP4から直接取り出す機能は含みません。同期精度は未検証です。</p></article>
+<details><summary>記録設定・センサーの復帰</summary><label for="rate">子機BNO保存周期</label> <select id="rate"><option value="100">100 Hz</option><option value="50">50 Hz</option></select><div class="actions"><button data-action="rate" data-requires-child="1" disabled>周期を適用して新規記録</button><button data-action="resetImu" data-requires-child="1" disabled>子機BNO085を再初期化</button></div><p class="note">周期変更は子機記録を停止し、新しいファイルで再開します。電源投入時は100Hz構成です。再初期化中は一時的に未取得になります。</p></details></section><section id="panel-clock" role="tabpanel" aria-labelledby="tab-clock" hidden><article class="clock-overview"><h2>時刻・位置の要約</h2><p id="clockOverview" role="status">未取得</p><p class="note">必要な項目を開くと、これまでの情報・設定を確認できます。</p></article><details id="rtkPanel" class="fold-panel"><summary>RTK基準局への接続 <span id="rtkCompact" class="compact">未取得</span></summary><p class="note">基準局は位置の誤差を補正するデータの配信元です。事前に接続情報を保存すれば、現地ではテザリングをONにして補正受信を開始できます。</p><p id="gnssNetwork" role="status">接続先を確認中…</p><p id="gnssRtkStatus" role="status">未取得</p><details class="fold-panel"><summary>受信信号・補正採用・PPK記録の詳細</summary><dl id="gnssPpkStatus"></dl></details>
+<details><summary>接続の準備・現地で設定を変更</summary><p class="note">① 親機が使うテザリング情報を入力 → ② 接続設定を適用 → ③ 記録・測距を停止してSDへ保存。電源を切っても同じSDから読み込みます。SDへ保存する接続情報は暗号化されません。補正受信は開始ボタンで行います。</p>
+<button id="gnssGakuenPreset">神戸・学園都市周辺の無料局候補を入力</button><p class="note">候補：Drogger配信の3C722D56。ユーザー名・パスワードは不要です。2026年10月25日に補正受信とGalileo E1/E5aの信号欄を確認しました。GPS L5は同受信中に確認できていません。現地のRTK成立・位置精度は未検証です。停止中なら一覧から別の局を選べます。</p>
+<label for="gnssSsid">親機が接続するテザリングのWi-Fi名</label><input id="gnssSsid" maxlength="32" autocomplete="off"><label for="gnssWifiPass">テザリングのWi-Fiパスワード</label><input id="gnssWifiPass" type="password" maxlength="63" autocomplete="new-password" placeholder="登録済みなら再入力不要"><label for="gnssKeepWifi"><input id="gnssKeepWifi" type="checkbox" checked>同じWi-Fi名でパスワードが空欄なら登録済みの値を使う</label>
+<label for="gnssHost">補正サービスのサーバー</label><input id="gnssHost" maxlength="128" placeholder="サービス指定のホスト名"><label for="gnssPort">ポート</label><input id="gnssPort" type="number" min="1" max="65535" value="2101"><p class="note">以下は補正サービスの利用者情報です。WindowsやAquaBeaconのアカウントではありません。認証不要のサービスでは空欄にします。</p><label for="gnssUser">補正サービスのユーザー名（必要な場合のみ）</label><input id="gnssUser" maxlength="96" autocomplete="off"><label for="gnssPass">補正サービスのパスワード（必要な場合のみ）</label><input id="gnssPass" type="password" maxlength="128" autocomplete="new-password"><label for="gnssKeepAuth"><input id="gnssKeepAuth" type="checkbox" checked>同じ接続先で両方空欄なら登録済みの認証情報を使う（解除で消去）</label>
+<div class="actions"><button id="gnssConfigure">接続設定を適用（今回のみ）</button><button id="gnssSave">親機の記録・測距を停止してSDへ保存</button><button id="gnssLoad">SDの設定を読み込んでテザリングへ接続</button></div><p class="note">SD保存は親機の記録と測距を停止して行います。保存後の記録再開は手動です。Wi-Fi情報の変更時は一時的に切れることがあります。AquaBeacon-MAINへ接続し直してください。</p><p id="gnssConfigState" role="status">設定を確認中…</p></details>
+<p class="note">基準局は、親機と共通の信号を配信する近くの局を選びます。「2周波」の表示だけではL5対応を保証しません。自動選択は距離による候補選びです。</p><div class="actions"><button id="gnssTable">基準局一覧を取得</button><button id="gnssAuto">100km以内の最寄り候補を選択・接続</button></div><div class="rtk-picker"><label for="gnssStationSearch">基準局を検索（局名・配信先名・衛星・ネットワーク）</label><input id="gnssStationSearch" type="search" placeholder="例：局名、3C66、GPS" aria-describedby="gnssStationCount"><p id="gnssStationCount" class="note" role="status">一覧を取得すると検索できます</p><label for="gnssStation">検索結果から基準局を選ぶ</label><select id="gnssStation" aria-describedby="gnssStationHint"><option value="">一覧を取得してください</option></select><p id="gnssStationHint" class="note">局名は場所などの説明、配信先名（マウントポイント）は接続に使うIDです。一覧で選ぶと下の配信先名へ反映します。</p><label for="gnssMount">接続する配信先名（直接入力も可）</label><input id="gnssMount" maxlength="63"><dl id="gnssStationDetails"></dl><p id="gnssActiveStation" class="note">親機の接続先：未取得</p></div><div class="actions"><button id="gnssSelect" class="primary">この局でRTK補正を開始</button><button id="gnssStop">RTK補正を停止</button></div><p id="gnssRtkMessage" role="status"></p><p id="gnssHistoryState" class="note" role="status">前回受信局：読込み待ち</p><button id="gnssReconnect" disabled>前回受信できた局へ再接続</button><p class="note">補正データを受信できた局を親機SDへ自動保存します。再接続すると、その局のサーバー・認証・テザリング設定を復元します。</p>
+<details><summary>アンテナ情報を記録（空欄でも受信できます）</summary><p class="note">親機に取り付けたGNSSアンテナの情報を記録する欄です。入力しても受信設定は変わりません。Wi-Fi用アンテナや基準局側のアンテナではありません。型番・高さが不明なら空欄にしてください。高さを記録する場合は、測った基準点とアンテナ側の測定位置を実験メモにも残してください。</p><label for="gnssAntenna">親機のGNSSアンテナのメーカー・型番（任意）</label><input id="gnssAntenna" maxlength="64"><label for="gnssAntennaHeight">測定したアンテナ高（m・任意）</label><input id="gnssAntennaHeight" type="number" min="0" max="100" step="0.0001"><button id="gnssAntennaSave">アンテナ情報を記録</button></details><p class="note">PPK用UBX（生観測・航法データ）とRTCM、設定・欠落状況を親機SDへ保存します。実験記録の開始・終了と連動します。解析には同じ時間帯の基準局観測データ、基準局座標、アンテナ高等も必要です。RTK Fixed表示は受信機の判定で、位置精度の実測合格を示しません。</p></details><details><summary>スマホから位置・時刻を共有</summary><p class="note">この画面を開いている端末の時計を親機へ送ります。位置共有はHTTPSのGitHub Pagesで位置情報の許可が必要です。スマホ位置はGPS以外の推定も含みます。送信先は親機で、SD記録中は時刻・位置・精度を保存します。</p><div class="actions"><button id="phoneTime">時刻共有を開始</button><button id="phonePosition">位置・時刻共有を開始</button><button id="phoneStop">共有停止・親機の共有情報を解除</button></div><p id="phoneMessage" role="status">共有停止中。スマホの日時を自動設定にしてください。</p><dl id="phoneStatus">未取得</dl><p class="note">画面を開いている間、約30秒ごとに更新します。端末時計と通信遅延に依存する参考時刻で、GPSの1PPS精度はありません。共有時刻の更新が3分止まるとRTCへ切り替えます。位置は取得から1分で無効になります。位置の取得に失敗しても時刻共有は続けます。SpresenseのUTC対応が成立すればそちらを優先します。親機が選んだUTCを子機にも配信し、両機のRTCへ保存します。測距用の単調時刻は変更しません。RTCの電源断保持にはバックアップ電池が必要です。</p></details><details id="utcPanel" class="fold-panel"><summary>親子のUTC・RTC <span id="utcCompact" class="compact">未取得</span></summary><dl id="utcStatus">未取得</dl><p class="note">GPS → Wi-Fi経由の端末時計 → RTCの順に選びます。この画面を開くと端末時刻の共有を開始します。UTC有効は絶対精度の保証ではありません。RTC復元は秒単位の参考時刻で、長期の誤差は未校正です。</p></details><details id="gnssTimePanel" class="fold-panel"><summary>親機GNSS・GPS時刻同期</summary><dl id="spresense">未取得</dl><p class="note">GPS測位、1PPS受信、UTCとの対応を分けて表示します。UTC対応の成立は連続した時刻・パルスの条件成立を示し、絶対時刻の精度や1秒ずれがないことは未検証です。子機とのテザー同期は下記とは独立です。捕捉中の衛星数・信号強度は現在の親機GNSS通信形式では取得できません。</p></details></section><section id="panel-logs" role="tabpanel" aria-labelledby="tab-logs" hidden><p class="note">3台を個別に操作します。停止状態からの開始・復旧では既存ログを残し、新規ファイルで記録します。保存中の開始ボタンは現在の記録を継続します。Spresenseの記録は親子の一括操作とは独立しています。</p><div class="sd-grid"><article id="parentSdCard" class="sd-card attention"><h2>親機SD</h2><p id="parentSdState" role="status">未取得</p><div class="actions"><button data-action="recoverParentSd">親機の保存開始・SD復旧</button><button data-action="stopParentSd">親機の保存停止</button></div><details><summary>SD診断</summary><p id="sdRecoveryStatus">未取得</p><p class="note">失敗時は5秒・15秒・60秒の待機後に最大3回、自動で再認識します。保存中の復旧ボタンは記録を継続します。繰り返し失敗する場合は停止し、電源を切ってカードと接続を確認してください。</p></details></article><article id="sprSdCard" class="sd-card attention"><h2>Spresense SD</h2><p id="sprSdState" role="status">未取得</p><div class="actions"><button disabled data-spr="start">Spresenseの保存開始・SD復旧</button><button disabled data-spr="stop">Spresenseの保存停止</button></div><p id="sprMessage" role="status"></p><details><summary>SD・通信診断／再起動</summary><p id="sprStatus" role="status">未取得</p><dl id="sprDetails"></dl><button disabled data-spr="reset">停止後にSpresenseを再起動</button><p class="note">J_SPR1の1番PPSはD02へ入力します。PPS検出・UTC対応・IMU時刻推定と精度検証は別です。再起動は記録停止完了後に行えます。</p></details></article><article id="childSdCard" class="sd-card attention"><h2>子機SD</h2><p id="childSdState" role="status">未取得</p><div class="actions"><button data-action="recoverChildSd" data-requires-child="1" disabled>子機の保存開始・SD復旧</button><button data-action="stopChildSd" data-requires-child="1" disabled>子機の保存停止</button></div><p class="note">子機が未接続の間は操作できません。自動復旧は最大3回、待機は5秒・15秒・60秒です。保存状態とエラー累計は状態タブの子機詳細でも確認できます。</p></article></div><details><summary>SDログの回収</summary><p class="note">「実験終了」で親子の保存を停止してから一覧を開いてください。子機のログはテザーを通して転送するため、大きなファイルには時間がかかります。</p><label for="logTarget">回収する機器</label> <select id="logTarget"><option value="c">子機</option><option value="p">親機</option></select><div class="actions"><button data-action="list">ファイル一覧を取得</button><button id="cancelDownload">転送を中止</button></div><p id="downloadState" role="status"></p><progress id="downloadProgress" value="0" max="1"></progress><div id="loglist"></div></details></section></main><dialog id="calibrationWarning" aria-labelledby="calibrationWarningTitle"><h2 id="calibrationWarningTitle">校正が未完了、または確認できません</h2><p id="calibrationWarningReasons"></p><p class="note">未校正の記録として実験を続けることもできます。カメラの時刻は撮影クリップごとに収録後の照合が必要です。</p><div class="actions"><button id="calibrationWarningBack" autofocus>校正へ戻る</button><button id="calibrationWarningContinue">未校正を承知して開始</button></div></dialog><script>
+const el=id=>document.getElementById(id), fmt=(x,u='')=>x==null?'未取得':Number(x).toFixed(2)+u;
+// BATTERY_ESTIMATE_BEGIN
+// Voltage-only display index, not a calibrated capacity measurement.
+// Linear fallback approach: https://github.com/iNavFlight/inav/blob/master/src/main/sensors/battery.c
+const batteryProfile={cells:3,capacityMah:2200,nominalWh:24.42,emptyV:10.5,fullV:12.6,warningV:10.8};
+function batteryEstimate(h,stale=false){
+ const v=h?.bus_v;
+ if(stale)return {percent:null,message:'通信途絶・残量不明'};
+ if(!h || !(h.flags&16) || typeof v!=='number' || !Number.isFinite(v))return {percent:null,message:'電圧未取得・残量不明'};
+ if(!(h.flags&1) || v<6)return {percent:null,message:'電池電源を確認してください（USB給電など）'};
+ if(v>12.9)return {percent:null,message:'想定電圧範囲外・残量不明'};
+ const p=batteryProfile;
+ const percent=Math.round(Math.max(0,Math.min(100,(v-p.emptyV)/(p.fullV-p.emptyV)*100))/5)*5;
+ return {percent,low:v<=p.warningV,message:v<=p.warningV?'低電圧・電池を確認してください':'電圧からの簡易推定'};
+}
+// BATTERY_ESTIMATE_END
+const batteryExpiry={};
+function renderBattery(id,h,stale){
+ clearTimeout(batteryExpiry[id]);
+ if(!stale)batteryExpiry[id]=setTimeout(()=>renderBattery(id,{},true),3000);
+ const b=batteryEstimate(h,stale),box=el(id+'Battery');
+ const label=document.createElement('span');label.className=b.low?'bad':'';
+ label.textContent=b.percent===null?(stale&&!overviewSeen[id]?'未接続・電池残量不明':b.message):'電池 約 '+b.percent+'%（電圧目安）'+(b.low?'・低電圧':'');
+ box.replaceChildren(label);
+ if(b.percent!==null){const meter=document.createElement('meter');meter.min=0;meter.max=100;meter.low=20;meter.high=100;meter.optimum=100;meter.value=b.percent;meter.setAttribute('aria-label',(id==='parent'?'親機':'子機')+'の推定電池残量');box.append(meter);}
+}
+
+
+// DEVICE_OVERVIEW_BEGIN
+let overviewExpiry,overviewChildConnected=false;
+const overviewSeen={parent:false,child:false,spr:false},overviewCounters={};
+// A cumulative total is history. Only an increase since the last fresh poll is current.
+function recentIssues(key,values){const old=overviewCounters[key];overviewCounters[key]={...values};return old?Object.keys(values).filter(k=>Number.isFinite(values[k])&&Number.isFinite(old[k])&&values[k]>old[k]).map(k=>k+'（前回更新から増加）'):[];}
+
+function overviewHealthIssues(h,child){
+ const issues=[],f=h.flags||0;if(!(f&1))issues.push('周辺電源なし');
+ if(batteryEstimate(h).low)issues.push('電池低電圧');
+ if(child&&(f&8))issues.push('漏水検知');
+ if(child&&(f&1)&&!(f&4))issues.push('BNO085未取得');
+
+ return issues;
+}
+function paintDevice(key,fresh,storage,issues){
+ const seen=overviewSeen[key];if(fresh)overviewSeen[key]=true;else issues=[seen?'通信途絶・最新状態不明':'未接続・状態未取得'];
+ const bad=issues.length>0;el(key+'Card').className='device-card'+(bad?' attention':'');
+ el(key+'State').textContent=!fresh?(seen?'通信異常':'未接続／未取得'):bad?'現在の異常あり':'応答あり';
+ el(key+'Storage').textContent='SD：'+(fresh?storage:'保存状態不明');
+ const issueText=issues.slice(0,2).join(' / ')+(issues.length>2?' / 他'+(issues.length-2)+'件':'');el(key+'Issue').textContent=issueText||(fresh?'検出異常なし':'接続後に表示');el(key+'IssueDetails').textContent=issues.join(' / ');
+ el(key+'SdCard').className='sd-card'+(bad?' attention':'');el(key+'SdState').textContent=(!fresh?(seen?'通信途絶・保存状態不明':'未接続・保存状態不明'):storage)+(issues.length?' · '+issues.join(' / '):'');
+}
+function renderDeviceOverview(s){
+ clearTimeout(overviewExpiry);if(!s)for(const k of Object.keys(overviewCounters))delete overviewCounters[k];if(s)overviewExpiry=setTimeout(()=>renderDeviceOverview(null),3000);
+ const parent=s?.local,child=s?.remote,sp=s?.spresense,linked=!!s&&s.link_age_ms<3000&&!!child;
+ overviewChildConnected=linked;
+ const parentIssues=parent?overviewHealthIssues(parent,false):[];if(parent&&s.mag_calibration?.error)parentIssues.push('磁気校正：'+s.mag_calibration.error);if(parent&&s.parent_calibration?.restore_error)parentIssues.push('校正セット復元エラー');
+ const parentStorage=parent?.flags&2?'保存中':s?.sd_reason==='INITIALIZING'?'準備中':s?.sd_reason==='STOPPED'?'停止中':s?.sd_recovery?.waiting?'自動復旧待ち':'停止／未認識';
+ if(parent&&!(parent.flags&2)&&!['STOPPED','INITIALIZING'].includes(s.sd_reason)&&s.sd_recovery?.enabled)parentIssues.push(s.sd_recovery.exhausted?'SD復旧上限に到達':'SDを確認してください');
+ if(parent)parentIssues.push(...recentIssues('parent',{'SDエラー':parent.sd_errors,'記録欠落':parent.dropped,'PPK保存欠落':s.ppk?.dropped,'GNSS UART欠落':s.gnss?.uart_overflows}));
+ paintDevice('parent',!!parent,parentStorage,parentIssues);
+ if(!linked)delete overviewCounters.child;
+ paintDevice('child',linked,child?.flags&2?'保存中':'停止／未認識',linked?[...overviewHealthIssues(child,true),...recentIssues('child',{'SDエラー':child.sd_errors,'記録欠落':child.dropped,'IMU欠落':child.imu_gaps})]:[]);
+ const sprFresh=!!sp?.link_fresh,sprIssues=[];if(!sprFresh)delete overviewCounters.spr;
+ if(sprFresh){
+  sprIssues.push(...recentIssues('spr',{'SDエラー':sp.sd_errors,'IMUエラー':sp.imu_errors,'IMU欠落':sp.imu_gaps,'CRCエラー':sp.crc_errors,'応答期限切れ':sp.timeouts}));
+  if(sp.sd_state==='ERROR'||sp.sd_state==='RECOVERING'||(sp.recording&&!sp.sd_ok))sprIssues.push('SD '+(sp.sd_state==='RECOVERING'?'自動復旧待ち':'異常'));
+  if(sp.imu_ok===false)sprIssues.push('IMU未取得');if(sp.calibration_save_error||sp.calibration_restore_error||sp.calibration===6)sprIssues.push('校正エラー');
+
+ }
+ paintDevice('spr',sprFresh,sp?.recording&&sp.sd_ok?'保存中':sp?.sd_state==='STOPPED'?'停止中':sp?.sd_state==='RECOVERING'?'自動復旧待ち':sp?.sd_state==='ERROR'?'異常・復旧が必要':'停止／未認識',sprIssues);
+ document.querySelectorAll('[data-action]').forEach(b=>{if(b.dataset.requiresChild==='1')b.disabled=busy||!linked;if(['recoverParentSd','stopParentSd'].includes(b.dataset.action))b.disabled=busy||!parent;});
+ const g=s?.gnss,r=s?.rtk,u=s?.utc,p=s?.ppk,solutions={fixed:'RTK Fixed',float:'RTK Float',single:'単独測位',unknown:'未取得'},sources={gps_pps_candidate:'GPS PPS',phone_clock:'端末時計',rtc:'RTC保持時刻',none:'未同期'};
+ const solution=solutions[g?.rtk_solution]||'未取得',source=u?.valid?(sources[u.source]||'不明'):'未同期',position=Number.isFinite(g?.latitude)&&Number.isFinite(g?.longitude)?g.latitude.toFixed(6)+', '+g.longitude.toFixed(6):'測位待ち';
+ el('clockOverview').textContent=s?`${solution} · ${position}\n時刻：${source} · PPK：${p?.recording?'保存中':'停止／未取得'}`:'通信途絶・時刻と位置は不明';
+ el('rtkCompact').textContent=s?`${solution} · ${r?.mount||'基準局未選択'} · ${r?.connected?'補正受信中':r?.state||'未接続'}`:'通信途絶・状態不明';
+ el('utcCompact').textContent=s?`時刻源 ${source} · 親機RTC ${u?.rtc_valid?'有効':'未設定／未取得'} · 子機 ${linked?'接続中':'未接続'}`:'通信途絶・状態不明';
+}
+// DEVICE_OVERVIEW_END
+function render(id,h,stale,child){renderBattery(id,h,stale);let rows=[];const add=(k,v)=>rows.push([k,v]);if(stale){el(id).textContent=overviewSeen[id]?'通信途絶：最新状態を確認できません':'未接続・状態未取得';el(id).className='bad';return;}el(id).className='';let f=h.flags;add('周辺電源',f&1?'検出':'未検出');add('SD保存',f&2?'保存中':'停止／異常');add('保存 / 同期済み',h.rows+' / '+h.durable_rows+' 行');add('SDエラー累計（履歴）',h.sd_errors);add('記録欠落累計（履歴）',h.dropped);add('電源電圧',fmt(h.bus_v,' V'));add('電流',fmt(h.current_ma,' mA'));add('磁気 X / Y / Z',[h.mag_x,h.mag_y,h.mag_z].map(x=>fmt(x)).join(' / ')+' µT');if(child){add('漏水入力',f&8?'濡れ検知':'濡れ未検知');add('水温',fmt(h.temp_c,' °C'));add('水圧',fmt(h.pressure_mbar,' mbar'));add('BNO085',f&4?'取得中':'未取得／遅延');add('姿勢レポート累計',h.imu_samples);add('IMU欠落・更新不足',h.imu_gaps);add('最大記録遅れ',h.max_lateness_us+' µs');add('受信比較器',f&512?'HIGH':'LOW');add('受信入力のエッジ',h.rx_edges);add('受信包絡線',h.env_mv+' mV');}el(id).replaceChildren(...rows.flatMap(([k,v])=>{let dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd]}));}
+
+
+// SPRESENSE_VIEW_BEGIN
+function spresenseRows(g){
+ if(!g)return [['状態','未対応の親機ファームウェア／未取得']];
+ const fresh=g.link_fresh,yn=(yes,a,b)=>yes?a:b;
+ return [
+ ['親機GNSS通信',fresh?'受信中':'応答なし'],
+ ['GPS測位',!fresh?'不明':g.fix_valid?'測位成立・GPS受信確認':'未測位（信号受信の有無は不明）'],
+ ['測位に使用中の衛星',fresh?g.satellites_used+' 機':'不明'],
+ ['1PPS信号',yn(g.pps_fresh,'検出中','未検出／途絶')],
+ ['1PPS周期',g.pps_fresh&&g.pps_period_us?g.pps_period_us+' µs':'未取得'],
+ ['GPS時刻データ',!fresh?'不明':yn(g.time_valid,'有効','無効／取得待ち')],
+ ['親機とUTCの対応',yn(g.sync_candidate,'成立（精度未検証）','未成立')],
+ ['UTC参考時刻',g.sync_candidate&&Number.isFinite(g.utc_candidate_us)?new Date(g.utc_candidate_us/1000).toISOString():'未取得'],
+ ['UART速度',g.baud+' bps'],
+ ['受信パケット / CRCエラー',g.packets+' / '+g.crc_errors]
+ ];
+}
+// SPRESENSE_VIEW_END
+let spresenseExpiry;
+function renderSpresense(g,stale=false){
+ clearTimeout(spresenseExpiry);const box=el('spresense');
+ if(stale){box.textContent='親機の状態更新が途絶えました・同期状態不明';box.className='bad';return;}
+ box.className='';box.replaceChildren(...spresenseRows(g).flatMap(([k,v])=>{let dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd]}));
+ spresenseExpiry=setTimeout(()=>renderSpresense(null,true),3000);
+}
+
+let busy=false,abortGain=false,abortDownload=false;
+const errors=['','処理中です','SDカードを確認してください','入力が不正です','先に記録を停止してください','ファイルが見つかりません','子機の応答がタイムアウトしました','対応していない操作です','BNO085が応答しないか、設定・保存に失敗しました','校正を開始し、各センサーが中以上で5秒続いてから保存してください','個別校正・機体の軸合わせが未完了です。警告を確認して開始してください'];
+const pause=ms=>new Promise(r=>setTimeout(r,ms));
+const bytes=r=>Uint8Array.from((r.hex||'').match(/../g)||[],x=>parseInt(x,16));
+const text=r=>new TextDecoder().decode(bytes(r));
+async function post(path,body=''){let r=await fetch(path,{method:'POST',body,headers:{'X-Aqua-Control':'1'},signal:AbortSignal.timeout(8000)}),v=await r.json();if(!r.ok||v.error){const e=Error(typeof v.error==='number'?(errors[v.error]||'操作に失敗しました'):v.error||'通信に失敗しました');e.control=v;throw e;}return v}
+const cmd=async(target,op,arg=0,name='')=>{if((op===3||op===4)&&arg===0){const approval=await calibrationPreflight([target]);if(approval<0)throw Error('開始を中止しました');arg=approval;}const result=await post('/api/control/'+target+'/'+op+'/'+arg+(name?'/'+encodeURIComponent(name):''));if((op===3||op===4)&&result.arg===1){const until=performance.now()+30000;while(performance.now()<until){await pause(250);const info=await post('/api/control/'+target+'/1/0'),state=text(info);if(state==='NONE')return result;if(state!=='INITIALIZING'){const reason=({INIT_TIMEOUT:'SDの準備が制限時間内に完了しませんでした',SPI_IO_TIMEOUT:'SDとの通信が制限時間内に完了しませんでした'}[state]||state);throw Error('記録を開始できません：'+reason);}el('message').textContent=(target==='p'?'親機':'子機')+'のSDを準備しています…';}throw Error('SDの準備が完了しません。ログ・SDで状態を確認してください');}return result;};
+const rangeStop=()=>post('/api/range/stop');
+async function stopBoth(){await rangeStop();let failures=[];for(let t of ['p','c'])try{await cmd(t,2)}catch(e){failures.push((t==='p'?'親機':'子機')+': '+e.message)}if(failures.length)throw Error(failures.join('\n'))}
+async function both(op,arg=0){for(let t of ['p','c'])await cmd(t,op,arg)}
+function setBusy(on){busy=on;document.querySelectorAll('[data-action]').forEach(b=>b.disabled=on||(b.dataset.requiresChild==='1'&&!overviewChildConnected));document.querySelectorAll('.file button').forEach(b=>b.disabled=on)}
+async function action(fn){if(busy)return;setBusy(true);el('message').className='';el('message').textContent='処理中…';try{await fn();el('message').textContent='操作が完了しました。状態表示で保存・送信状態を確認してください。'}catch(e){el('message').className='bad';el('message').textContent=e.message+'\n一部の機器だけ状態が変わった可能性があります。状態を確認してください。'}finally{setBusy(false)}}
+function chart(points){let c=el('rxChart'),d=devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;c.width=w*d;c.height=h*d;let x=c.getContext('2d');x.scale(d,d);let high=Math.max(300,...points.map(p=>p.peak))*1.1;
+x.font='12px system-ui';x.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--muted');for(let i=0;i<4;i++){let y=20+i*(h-45)/3;x.fillText(Math.round(high*(1-i/3))+' mV',0,y);x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--paper');x.beginPath();x.moveTo(65,y);x.lineTo(w,y);x.stroke()}for(let [key,col] of [['mean',getComputedStyle(document.documentElement).getPropertyValue('--chart')],['peak',getComputedStyle(document.documentElement).getPropertyValue('--accent')]]){x.strokeStyle=col;x.beginPath();points.forEach((p,i)=>{let a=65+(w-75)*p.t/60,b=h-25-p[key]/high*(h-45);i?x.lineTo(a,b):x.moveTo(a,b)});x.stroke()}}
+async function gain(){abortGain=false;let points=[];try{await rangeStop();await cmd('c',2);await cmd('c',10);await post('/api/range/test');let start=performance.now();while(!abortGain && performance.now()-start<60000){let r=await cmd('c',12),v=text(r).split(',').map(Number),t=(performance.now()-start)/1000;if(!r.arg)break;if(v[6]){points.push({t,mean:v[1],peak:v[2]});chart(points)}el('gainState').textContent=t.toFixed(1)+' / 60秒 · ピーク '+v[2]+' mV · 比較器 '+(v[5]?'HIGH':'LOW')+' · エッジ '+v[3]+' · ADC欠損 '+v[4];let s=await(await fetch('/api/status')).json();renderRange(s);await pause(120)}}finally{let fail=[];for(let f of [rangeStop,()=>cmd('c',11),()=>cmd('c',3,0x43414c21)])try{await f()}catch(e){fail.push(e.message)}el('gainState').textContent+=' · 終了';if(fail.length)throw Error(fail.join('\n'))}}
+async function fileList(){el('loglist').replaceChildren();let target=el('logTarget').value;for(let i=0;i<10000;i++){let r=await cmd(target,8,i);if(!r.length)break;let name=text(r),row=document.createElement('div'),label=document.createElement('span'),b=document.createElement('button');row.className='file';label.textContent=name+' · '+r.arg.toLocaleString()+' bytes';b.textContent='ダウンロード';b.onclick=()=>action(()=>download(target,name,r.arg));row.append(label,b);el('loglist').append(row)}if(!el('loglist').children.length)el('loglist').textContent='ログファイルはありません'}
+async function download(target,name,size){abortDownload=false;let chunks=[],offset=0;el('downloadProgress').max=Math.max(1,size);while(offset<size){if(abortDownload)throw Error('転送を中止しました');let r=await cmd(target,9,offset,name),data=bytes(r);if(r.arg!==size||!data.length||offset+data.length>size)throw Error('ファイルサイズが変わったか、転送が途中で終了しました');chunks.push(data);offset+=data.length;el('downloadProgress').value=offset;el('downloadState').textContent=name+' '+offset.toLocaleString()+' / '+size.toLocaleString()+' bytes'}let url=URL.createObjectURL(new Blob(chunks,{type:!/\.csv$/i.test(name)?'application/octet-stream':'text/csv'})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);el('downloadState').textContent=name+' 回収完了'}
+async function applyAcquisition(){
+ const rate=Number(el('rangingRate').value),pattern=Number(el('acousticPattern').value);
+ const hz=Number(el('frequency').value),seconds=Number(el('observationSeconds').value),every=Number(el('observationEvery').value);
+ if(![1,2,3,4].includes(rate)||![0,1].includes(pattern)||![10000,50000,100000,200000].includes(hz)||!Number.isInteger(seconds)||seconds<1||seconds>5||!Number.isInteger(every)||every<0||every>300)throw Error('設定値を確認してください');
+ await rangeStop();await post('/api/range/config/'+hz+'/'+seconds+'/'+every+'/'+rate+'/'+pattern);
+}
+let acquisitionLoaded=false;
+function renderAcquisition(s){
+ if(s&&!acquisitionLoaded){el('rangingRate').value=String(s.ranging_rate_hz??1);el('acousticPattern').value=String(s.acoustic_pattern??0);el('frequency').value=String(s.frequency_hz);el('observationSeconds').value=String(s.observation_seconds);el('observationEvery').value=String(s.observation_every);acquisitionLoaded=true;}
+ el('acquisitionStatus').textContent=s?'設定: '+(s.ranging_rate_hz??1)+'回/秒 · '+((s.acoustic_pattern??0)?'毎回変わる3連（直近 #'+(s.acoustic_pattern_id<64?s.acoustic_pattern_id:'—')+'）':'単発')+' · '+s.frequency_hz/1000+' kHz · '+s.observation_seconds+'秒 · '+(s.observation_every?s.observation_every+'回に1回':'観測記録無効')+' · 保存形式: バイナリ':'通信途絶・設定不明';
+ const c=s&&s.link_age_ms<3000?s.remote:null;
+ el('observationStatus').textContent=c?'子機観測: '+(c.observation_active?'取得中':'待機')+' · #'+(c.observation_shot??0)+' · 保存 '+(c.observation_samples??0)+' samples · 欠損 '+(c.observation_lost??0)+' · 実行不可 '+(c.observation_skipped??0):'子機観測状態不明';
+}
+// CONSOLE_NAV_BEGIN
+let selectedTab='status';
+function selectTab(key,focus=false){
+ selectedTab=key;
+ document.querySelectorAll('[role="tab"]').forEach(b=>{const on=b.id==='tab-'+key;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus()});
+ document.querySelectorAll('[role="tabpanel"]').forEach(p=>p.hidden=p.id!=='panel-'+key);
+}
+const tabButtons=[...document.querySelectorAll('[role="tab"]')];
+tabButtons.forEach((b,i)=>{b.onclick=()=>selectTab(b.id.slice(4));b.onkeydown=e=>{
+ const next={ArrowRight:(i+1)%tabButtons.length,ArrowLeft:(i+tabButtons.length-1)%tabButtons.length,Home:0,End:tabButtons.length-1}[e.key];
+ if(next!==undefined){e.preventDefault();selectTab(tabButtons[next].id.slice(4),true)}
+}});
+// CONSOLE_NAV_END
+// BNO_CAL_CLIENT_BEGIN
+let calibrationExpiry;
+function renderCalibration(c){
+ clearTimeout(calibrationExpiry);
+ if(!c){el('calCompact').textContent='子機の校正状態不明';el('calState').textContent='校正状態不明・再接続後に更新してください';el('calAccuracy').replaceChildren();el('calAdvice').textContent='判定不明。子機の接続を確認して校正状態を更新してください。';el('calAdvice').className='bad';return;}
+ const savedRecord=c.saved||(typeof bodyStates!=='undefined'&&bodyStates.c?.b>0);
+ el('calState').textContent=(c.active?'校正中・子機記録停止中':'校正終了／待機中')+' · '+(savedRecord?'保存成功の履歴を確認済み':c.ready?'保存可能':'未保存')+(c.err?' · BNOエラー '+c.err:'');
+ el('calCompact').textContent=c.err?'BNOエラー '+c.err:c.active?'校正中':savedRecord?'SD保存履歴あり・省略可':c.ready?'保存可能':'待機中';el('calCompact').className='compact'+(c.err?' bad':'');
+ const labels=['未校正','低','中','高'];
+ el('calAccuracy').replaceChildren(...[['加速度',c.a],['ジャイロ',c.g],['磁気',c.m]].flatMap(([label,value])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=!Number.isInteger(value)||value<0||value>3?'未取得／更新停止':labels[value]+' ('+value+'/3)';return[dt,dd]}));
+ const restInfo=Number.isInteger(c.gs)&&c.gs>=0&&c.gs<=3000&&(c.gr===0||c.gr===1);
+ const gyroPass=Number.isInteger(c.g)&&c.g<=3&&(c.g>=2||(restInfo&&c.g===1&&c.gr===1));
+ if(restInfo){const fresh=Number.isInteger(c.g)&&c.g>=0&&c.g<=3;const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent='ジャイロの受信・静止確認';dd.textContent=!fresh?'最新データ未確認（未受信または子機内で500ms以上更新なし）。静止は判定できません。':!c.active?'照会時点では受信中。静止確認は校正開始後に行います。':c.gr===1?'照会時点では受信中／3秒の静止を確認済み（今回の校正中）':'照会時点では受信中／静止 '+(c.gs/1000).toFixed(1)+' / 3.0 秒'+(c.g>=2?'（センサー判定は中以上）':'');if(c.active&&c.g===0)dd.textContent+=' ／ センサー判定は未校正 (0/3)、保存不可';el('calAccuracy').append(dt,dd);}
+ const missing=[['加速度',c.a,'姿勢を変えて静止',c.a>=2&&c.a<=3],['ジャイロ',c.g,'台の上で静止'+(restInfo?'（'+(c.gs/1000).toFixed(1)+' / 3.0 秒）':''),gyroPass],['磁気',c.m,'複数の軸でゆっくり回転',c.m>=2&&c.m<=3]].filter(([,v,,ok])=>!Number.isInteger(v)||!ok);
+ el('calAdvice').textContent=savedRecord&&!c.active&&!c.err?'保存成功の履歴があります。同じセンサ・取付なら個別校正は省略できます。カメラ用動作収録は毎回必要です。':c.err?'BNOエラー。終了操作と接続を確認してください。':c.saved?'保存応答を確認しました。校正を終了し、再起動後の保持を確認してください。':!c.active?'校正開始後に、各センサーの判定を確認できます。':c.ready?'保存条件を通過。BNOへ保存してください。'+(restInfo&&c.g===1?' ジャイロ判定は「低」のままです。静止を確認して保存できますが、精度は未検証です。':''):missing.length?'不足：'+missing.map(([n,v,action])=>n+'（'+(!Number.isInteger(v)||v<0||v>3?'更新未確認':action)+'）').join('、'):restInfo?'必要な条件を確認。1秒間の継続判定を待ってください。':'旧版の3センサー同時・5秒間の継続判定を待ってください。静止確認には親子の更新が必要です。';
+ el('calAdvice').className=c.err?'bad':c.ready||c.saved?'good':'';
+ calibrationExpiry=setTimeout(()=>renderCalibration(null),3500);
+}
+async function calibrationCommand(op){
+ try{const r=await cmd('c',op);const c=JSON.parse(text(r));renderCalibration(c);return c;}
+ catch(e){renderSprLink(null,true);renderCalibration(null);throw e;}
+}
+async function startCalibration(){await rangeStop();await cmd('c',2);await calibrationCommand(13)}
+async function pollCalibration(linked){
+ if(!linked){renderCalibration(null);return;}
+ if(selectedTab!=='sensors'||busy)return;
+ setBusy(true);try{await calibrationCommand(14)}catch(e){el('calState').textContent=e.message+' · 校正状態不明'}finally{setBusy(false)}
+}
+// BNO_CAL_CLIENT_END
+const actions={prepareParent:prepareParentCapture,calStart:startCalibration,calStatus:()=>calibrationCommand(14),calSave:()=>calibrationCommand(15),calEnd:()=>calibrationCommand(16),acquisition:applyAcquisition,recoverParentSd:()=>cmd('p',3),stopParentSd:()=>cmd('p',2),recoverChildSd:()=>cmd('c',3),stopChildSd:()=>cmd('c',2),new:()=>startExperiment(true),resume:()=>startExperiment(false),stopRecord:stopBoth,startRange:startRangeChecked,gain,list:fileList,rate:async()=>{await rangeStop();await cmd('c',2);await cmd('c',el('rate').value==='50'?6:7);await pause(2000);await cmd('c',3)},resetImu:async()=>{await rangeStop();await cmd('c',2);await cmd('c',5);await pause(2000);await cmd('c',3)}};
+document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>action(actions[b.dataset.action]));
+el('stopRange').onclick=()=>{abortGain=true;rangeStop().then(()=>el('message').textContent='測距送信を停止しました').catch(e=>el('message').textContent=e.message)};
+el('cancelGain').onclick=()=>{abortGain=true};el('cancelDownload').onclick=()=>{abortDownload=true};
+
+
+// PHONE_CLIENT_BEGIN
+function phoneClockSample(wallStart,wallEnd,elapsed){
+ if(!Number.isFinite(elapsed)||elapsed<0||elapsed>1000||Math.abs((wallEnd-wallStart)-elapsed)>100)throw Error('通信が遅いか端末時計が変わりました。再試行してください');
+ return {epoch:Math.round(wallStart+elapsed/2),rtt:Math.ceil(elapsed)};
+}
+function phonePositionValues(p,now){
+ const c=p.coords,age=now-p.timestamp;
+ if(![c.latitude,c.longitude,c.accuracy,age].every(Number.isFinite)||Math.abs(c.latitude)>90||Math.abs(c.longitude)>180||c.accuracy<0||c.accuracy>100000||age<0||age>=60000)throw Error('位置情報が古いか無効です');
+ return [Math.round(c.latitude*1e7),Math.round(c.longitude*1e7),Math.ceil(c.accuracy*1000),Math.ceil(age)];
+}
+// PHONE_CLIENT_END
+let phoneStopping=false,phoneMode='',phoneGeneration=0,phoneTimer,phoneWork=Promise.resolve(),phoneStatusExpiry;
+function renderPhone(p,stale=false){
+ clearTimeout(phoneStatusExpiry);const box=el('phoneStatus');
+ if(stale){box.textContent='通信途絶・共有状態不明';return;}
+ if(!p){box.textContent='親機の更新が必要です';return;}
+ const source={none:'未同期',phone_clock:'スマホ／端末の時計（簡易同期）',spresense_candidate:'Spresense（UTC対応・精度未検証）',gps_pps_candidate:'GPS PPS（絶対精度未検証）',rtc:'RTC保持時刻'};
+ const rows=[['親機の記録用時刻',source[p.source]||'不明'],['UTC参考時刻',p.utc_ms?new Date(p.utc_ms).toISOString():'未取得'],['端末時刻の共有',p.phone_time_fresh?'有効・通信往復 '+p.rtt_ms+' ms（時刻精度ではありません）':'未取得／期限切れ'],['スマホ位置',p.position_fresh?p.latitude.toFixed(6)+', '+p.longitude.toFixed(6):'未取得／期限切れ'],['位置の取得精度',p.position_fresh?'約 '+p.accuracy_m+' m':'未取得']];
+ box.replaceChildren(...rows.flatMap(([k,v])=>{const a=document.createElement('dt'),b=document.createElement('dd');a.textContent=k;b.textContent=v;return[a,b]}));phoneStatusExpiry=setTimeout(()=>renderPhone(null,true),3000);
+}
+function schedulePhone(){clearTimeout(phoneTimer);if(phoneMode)phoneTimer=setTimeout(()=>{phoneWork=phoneCycle()},30000)}
+async function phoneCycle(){
+ if(!phoneMode)return;if(busy||document.hidden){schedulePhone();return;}
+ const generation=phoneGeneration;setBusy(true);
+ try{
+  const start=Date.now(),mono=performance.now(),probe=await post('/api/phone/probe');
+  const sample=phoneClockSample(start,Date.now(),performance.now()-mono);
+  if(generation!==phoneGeneration)return;
+  await post('/api/phone/time/'+[probe.session,probe.token,sample.epoch,sample.rtt].join('/'));
+  if(generation!==phoneGeneration)return;
+  el('phoneMessage').textContent='時刻共有中 · '+new Date().toLocaleTimeString();
+  if(phoneMode==='position'){
+   try{
+    if(!window.isSecureContext||!navigator.geolocation)throw Error('位置共有にはHTTPSのGitHub Pagesを使用してください');
+    el('phoneMessage').textContent='時刻共有済み・スマホ位置を取得中…';
+    const pos=await new Promise((resolve,reject)=>navigator.geolocation.getCurrentPosition(resolve,reject,{enableHighAccuracy:true,maximumAge:0,timeout:15000}));
+    if(generation!==phoneGeneration)return;
+    await post('/api/phone/position/'+[probe.session,...phonePositionValues(pos,Date.now())].join('/'));
+    if(generation===phoneGeneration)el('phoneMessage').textContent='位置・時刻を共有しました · '+new Date().toLocaleTimeString();
+   }catch(e){if(generation===phoneGeneration){el('phoneMessage').textContent='時刻共有済み・位置は取得できません：'+(e.code===1?'位置情報が許可されていません':e.message||'取得失敗');if(e.code===1||!window.isSecureContext)phoneMode='time';}}
+  }
+ }catch(e){if(generation===phoneGeneration)el('phoneMessage').textContent='共有失敗：'+e.message+'（約30秒後に再試行）';}
+ finally{setBusy(false);if(generation===phoneGeneration)schedulePhone();}
+}
+function startPhone(mode){if(busy||phoneStopping){el('phoneMessage').textContent='実行中の操作が終わってから共有を開始してください';return;}clearTimeout(phoneTimer);phoneMode=mode;++phoneGeneration;phoneWork=phoneCycle()}
+el('phoneTime').onclick=()=>startPhone('time');el('phonePosition').onclick=()=>startPhone('position');
+el('phoneStop').onclick=async()=>{if(phoneStopping)return;phoneStopping=true;phoneMode='';++phoneGeneration;clearTimeout(phoneTimer);el('phoneMessage').textContent='共有を停止しています…';await phoneWork;try{await post('/api/phone/clear');el('phoneMessage').textContent='共有停止・親機の共有情報を解除しました（RTC保持時刻と保存済みSDログは残ります）'}catch(e){el('phoneMessage').textContent='この端末からの共有は停止しました。親機の解除に失敗：'+e.message+'。時刻は最大3分、位置は最大1分で失効します。'}finally{phoneStopping=false}};
+
+function renderSdRecovery(s){const r=s.sd_recovery;if(!r){el('sdRecoveryStatus').textContent='親機の更新が必要です';return;}const diag=' · カード'+(s.sd_card_present?'検出':'非検出')+' · SPI '+s.sd_spi_mhz+' MHz · 詳細 '+s.sd_error_code+'/'+s.sd_error_data;el('sdRecoveryStatus').textContent=(s.local.flags&2?'保存中 · 自動復旧成功 '+r.recoveries+' 回 · 累計SDエラー '+s.local.sd_errors:!r.enabled?'記録・自動復旧停止 · '+s.sd_reason:r.exhausted?'自動復旧の上限に到達 · '+s.sd_reason+' · カード確認後に復旧ボタンを押してください':r.waiting?'自動復旧待ち · 試行 '+r.attempts+' / 3 · '+s.sd_reason:'記録準備中 · '+s.sd_reason)+diag;}
+function renderUtc(s){
+ const u=s?.utc,names={none:'未同期',gps_pps_candidate:'GPS PPS',phone_clock:'Wi-Fi経由の端末時計',rtc:'RTC保持時刻'}, child=s&&s.link_age_ms<3000?s.remote:null;
+ const rows=[['親機UTC',u?.valid?new Date(u.utc_us/1000).toISOString():'未同期'],['時刻源',names[u?.source]||'不明'],['親機RTC',u?.rtc_valid?'有効 / '+u.rtc_time+' UTC':'未設定／読取不可'],['RTC書込エラー',u?.rtc_write_errors??'不明'],['子機UTC',child?(child.flags&1024?['','GPS PPS','Wi-Fi経由の端末時計','RTC保持時刻'][(child.flags>>12)&3]:'未同期'):'通信なし'],['子機RTC',child?(child.flags&128?'有効':'未設定／読取不可'):'通信なし']];
+ el('utcStatus').replaceChildren(...rows.flatMap(([k,v])=>{const a=document.createElement('dt'),b=document.createElement('dd');a.textContent=k;b.textContent=v;return[a,b]}));
+}
+
+// GNSS_RTK_BEGIN
+async function gnssAction(action,fields={}){try{const r=await fetch('/api/gnss/'+action,{method:'POST',headers:{'X-Aqua-Control':'1','Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(fields),signal:AbortSignal.timeout(5000)});const v=await r.json();el('gnssRtkMessage').textContent=v.message||'操作完了';if(!r.ok||!v.ok)throw Error(v.message||'操作に失敗しました');return true;}catch(e){el('gnssRtkMessage').textContent=['AbortError','TimeoutError'].includes(e.name)?'親機からの応答を時間内に受け取れませんでした。操作が受け付けられた可能性があります。接続状態を確認してください。':e.message;return false;}}
+let gnssConfigLoaded=false,gnssConfigLoading=false,gnssConfigEdited=false,gnssTrackAuto=false,gnssConfigRefresh=0;
+for(const id of ['gnssHost','gnssPort','gnssSsid','gnssWifiPass','gnssUser','gnssPass','gnssKeepWifi','gnssKeepAuth','gnssMount'])el(id).addEventListener('input',()=>{gnssConfigEdited=true;});
+async function loadGnssConfig(fill=false){if(gnssConfigLoading)return;gnssConfigLoading=true;try{const r=await fetch('/api/gnss/config',{signal:AbortSignal.timeout(5000)});if(!r.ok)throw Error('設定の取得に失敗しました');const c=await r.json();el('gnssConfigState').textContent=c.message+(c.dirty?'・現在の変更は未保存':'');el('gnssHistoryState').textContent=(c.last_available?`前回受信局：${c.last_host}:${c.last_port} / ${c.last_mount} · `:'')+(c.last_message||'保存された前回受信局なし');el('gnssReconnect').disabled=!c.last_available||busy;if(fill&&!gnssConfigEdited){for(const [id,key] of [['gnssHost','host'],['gnssPort','port'],['gnssSsid','ssid'],['gnssMount','mount']])el(id).value=c[key]??'';el('gnssUser').value=el('gnssPass').value=el('gnssWifiPass').value='';el('gnssUser').placeholder=c.has_auth?'登録済み・変更するときだけ入力':'認証不要なら空欄';el('gnssWifiPass').placeholder=c.has_wifi_password?'登録済み・変更するときだけ入力':'テザリングのパスワード';el('gnssKeepWifi').checked=el('gnssKeepAuth').checked=true;}gnssConfigLoaded=!!c.boot_checked;renderStationDetails();}catch(e){el('gnssConfigState').textContent=e.message;}finally{gnssConfigLoading=false;}}
+function gnssConfigFields(){return {host:el('gnssHost').value.trim(),port:el('gnssPort').value,user:el('gnssUser').value,password:el('gnssPass').value,ssid:el('gnssSsid').value,wifi_password:el('gnssWifiPass').value,mount:el('gnssMount').value.trim(),keep_auth:el('gnssKeepAuth').checked?'1':'0',keep_wifi:el('gnssKeepWifi').checked?'1':'0'};}
+async function applyGnssConfig(save=false){
+ if(busy)return;setBusy(true);el('gnssConfigure').disabled=el('gnssSave').disabled=el('gnssLoad').disabled=true;
+ try{
+  if(save){await rangeStop();await cmd('p',2);}
+  if(!await gnssAction('config',{...gnssConfigFields(),save:save?'1':'0'}))return;
+  el('gnssUser').value=el('gnssPass').value=el('gnssWifiPass').value='';el('gnssKeepAuth').checked=el('gnssKeepWifi').checked=true;
+  await loadGnssConfig();
+ }catch(e){el('gnssRtkMessage').textContent=e.message;}finally{setBusy(false);el('gnssConfigure').disabled=el('gnssSave').disabled=el('gnssLoad').disabled=false;}
+}
+el('gnssConfigure').onclick=()=>applyGnssConfig();el('gnssSave').onclick=()=>applyGnssConfig(true);
+el('gnssLoad').onclick=async()=>{if(await gnssAction('load')){gnssConfigEdited=false;await loadGnssConfig(true);}};
+el('gnssGakuenPreset').onclick=()=>{el('gnssHost').value='ntrip1.bizstation.jp';el('gnssPort').value='2101';el('gnssMount').value='3C722D56';el('gnssUser').value=el('gnssPass').value='';el('gnssKeepAuth').checked=false;gnssConfigEdited=true;el('gnssRtkMessage').textContent='学園都市周辺の候補を入力しました。テザリング情報を確認し、設定を適用してください。';};
+el('gnssAntennaSave').onclick=()=>gnssAction('antenna',{antenna:el('gnssAntenna').value,height:el('gnssAntennaHeight').value});
+el('gnssTable').onclick=()=>gnssOperation(()=>gnssAction('table'));el('gnssAuto').onclick=()=>gnssOperation(async()=>{if(await gnssAction('auto'))gnssTrackAuto=true;});el('gnssSelect').onclick=()=>gnssOperation(async()=>{if(gnssLiveRtk&&(el('gnssHost').value.trim()!==gnssLiveRtk.host||Number(el('gnssPort').value)!==gnssLiveRtk.port)){el('gnssRtkMessage').textContent='サーバーを変更した場合は、先に接続設定を適用してください。';return false;}return gnssAction('select',{mount:el('gnssMount').value.trim()});});el('gnssStop').onclick=()=>gnssOperation(()=>gnssAction('stop'));
+el('gnssStation').onchange=()=>{if(!el('gnssStation').value)return;el('gnssMount').value=el('gnssStation').value;gnssConfigEdited=true;renderStationDetails();};
+el('gnssMount').addEventListener('input',()=>{syncStationSelection();renderStationDetails();});
+el('gnssStationSearch').addEventListener('input',()=>renderStationOptions());
+el('gnssReconnect').onclick=()=>gnssOperation(async()=>{if(!await gnssAction('reconnect'))return false;gnssConfigEdited=false;await loadGnssConfig(true);return true;});
+async function gnssOperation(fn){
+ if(busy){el('gnssRtkMessage').textContent='別の操作を処理中です。完了してから操作してください。';return false;}
+ setBusy(true);const buttons=['gnssTable','gnssAuto','gnssSelect','gnssStop','gnssReconnect'];for(const id of buttons)el(id).disabled=true;
+ try{return await fn();}catch(e){el('gnssRtkMessage').textContent=e.message;return false;}finally{for(const id of buttons)el(id).disabled=false;setBusy(false);}
+}
+let gnssStations=[],gnssStationsKey='',gnssStationRequest='',gnssStationRetryAt=0,gnssLiveRtk=null,gnssLivePosition=null,gnssStationsTruncated=false,gnssStationsTotal=0;
+function stationKey(r){return `${r.host}:${r.port}/${r.table_generation??0}`;}
+function stationDistance(st){const g=gnssLivePosition;if(!g||!Number.isFinite(g.latitude)||!Number.isFinite(g.longitude))return '親機GNSSの測位待ち';const rad=Math.PI/180,a=Math.sin((st.lat-g.latitude)*rad/2),b=Math.sin((st.lon-g.longitude)*rad/2),h=a*a+Math.cos(g.latitude*rad)*Math.cos(st.lat*rad)*b*b;return '約 '+(12742*Math.asin(Math.sqrt(Math.max(0,Math.min(1,h))))).toFixed(1)+' km（一覧座標からの概算）';}
+function syncStationSelection(){const select=el('gnssStation'),mount=el('gnssMount').value.trim();select.value=[...select.options].some(o=>o.value===mount)?mount:'';}
+function renderStationOptions(){
+ const terms=el('gnssStationSearch').value.normalize('NFKC').toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
+ const visible=gnssStations.filter(st=>{const text=[st.name,st.mount,st.systems,st.network].join(' ').normalize('NFKC').toLocaleLowerCase();return terms.every(q=>text.includes(q));});
+ const empty=document.createElement('option');empty.value='';empty.textContent=visible.length?'基準局を選択してください':gnssStations.length?'一致する基準局がありません':'基準局一覧を取得してください';
+ el('gnssStation').replaceChildren(empty,...visible.map(st=>{const opt=document.createElement('option');opt.value=st.mount;opt.textContent=(st.name&&st.name!==st.mount?st.name+' / ':'')+st.mount;return opt;}));syncStationSelection();
+ el('gnssStationCount').textContent=`検索結果 ${visible.length} / ${gnssStations.length}局`+(gnssStationsTruncated?`（全${gnssStationsTotal}局中、先頭64局のみ。未掲載局は配信先名を直接入力）`:'');renderStationDetails();
+}
+function renderStationDetails(){
+ const mount=el('gnssMount').value.trim(),st=gnssStations.find(x=>x.mount===mount),r=gnssLiveRtk;
+ const sameCaster=r&&el('gnssHost').value.trim()===r.host&&Number(el('gnssPort').value)===r.port;
+ const rows=st&&sameCaster?[['選択中の局名',st.name||'説明なし'],['接続する配信先名',st.mount],['親機からの距離',stationDistance(st)],['衛星システム',st.systems||'記載なし'],['ネットワーク',st.network||'記載なし'],['配信形式',st.format||'記載なし'],['配信メッセージ（一覧の公称値）',st.details||'記載なし'],['GGA位置送信',st.gga?'必要':'不要'],['GPS L1 / L5対応', '一覧の2周波表記だけでは判定できません']]:[['接続する配信先名',mount||'未選択'],['基準局情報',!sameCaster?'接続設定を適用し、一覧を取得してください':mount?'この局は現在の検索用一覧にありません。配信先名で直接接続できます':'検索結果から選んでください']];
+ el('gnssStationDetails').replaceChildren(...rows.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return [dt,dd];}));
+}
+async function loadGnssStations(r){
+ const key=stationKey(r);if(gnssStationRequest||gnssStationsKey===key||Date.now()<gnssStationRetryAt)return;
+ gnssStationRequest=key;el('gnssStationCount').textContent='基準局一覧を読込み中…';
+ try{const res=await fetch('/api/gnss/stations',{signal:AbortSignal.timeout(5000)});if(!res.ok)throw Error('一覧を取得できませんでした');const x=await res.json();
+  if(!gnssLiveRtk?.table_ready||stationKey(gnssLiveRtk)!==key||stationKey(x)!==key)return;
+  gnssStationsKey=key;gnssStations=x.stations||[];gnssStationsTruncated=!!x.table_truncated;gnssStationsTotal=x.stations_total??gnssStations.length;renderStationOptions();
+ }catch(e){el('gnssStationCount').textContent='一覧の読込み失敗・5秒後に再試行します';gnssStationRetryAt=Date.now()+5000;}finally{gnssStationRequest='';}
+}
+function renderGnssRtk(s){if(s&&(!gnssConfigLoaded||Date.now()-gnssConfigRefresh>5000)){gnssConfigRefresh=Date.now();loadGnssConfig(!gnssConfigLoaded);}const g=s?.gnss,r=s?.rtk,p=s?.ppk;gnssLivePosition=g;const old=gnssLiveRtk;gnssLiveRtk=r;
+ if(!r?.table_ready)gnssStationsKey='';
+ if(old&&r&&(old.host!==r.host||old.port!==r.port)){gnssStations=[];gnssStationsKey='';renderStationOptions();}
+ el('gnssActiveStation').textContent=r?`${r.connected?'受信中':'親機の接続先'}：${r.host}:${r.port} / ${r.mount||'未選択'} · GPS L1：${r.gps_msm_fresh?(r.gps_l1_seen?'信号情報を受信':'未確認'):'未確認／更新途絶'} / L5：${r.gps_msm_fresh?(r.gps_l5_seen?'信号情報を受信':'未確認'):'未確認／更新途絶'}（この接続中のMSM信号・セル情報。搬送波の有効性やRTK採用は別）`:'親機の接続先：通信途絶・不明';renderStationDetails();if(gnssTrackAuto&&r?.table_ready&&!r.auto_pending&&r.mount){el('gnssMount').value=r.mount;gnssConfigEdited=true;gnssTrackAuto=false;syncStationSelection();renderStationDetails();}const sol={unknown:'未取得',single:'単独測位',float:'RTK Float',fixed:'RTK Fixed'};
+ el('gnssRtkStatus').textContent=s?`${g?.model||'機種確認中'} · ${sol[g?.rtk_solution]||'未取得'} · ${r?.state||'未設定'} · 基準局 ${r?.mount||'未選択'} · 補正 ${r?.rtcm_frames||0}件`:'通信途絶・GNSS状態不明';
+ const net=s?.network;el('gnssNetwork').textContent=net?.sta_connected?`テザリング元のスマホから開くアドレス：http://${net.sta_ip}/ · AquaBeacon-MAINへ直接接続：http://${net.ap_ip}/`:!net?'接続状態を取得できていません':!net.wifi_configured?'テザリング設定なし。Wi-Fi名・パスワードを適用するか、SDの設定を読み込んでください。':`テザリング${net.sta_status===4?'接続失敗。Wi-Fi名・パスワードとスマホ側設定を確認してください。':net.sta_status===6?'の接続／IPアドレス取得待ち。':'未接続／接続待ち。'}接続試行 ${net.wifi_attempts??0}回。未接続時は30秒ごとに再試行します。`;
+ const diag=g?.diagnostics, enabled=v=>v==null?'不明':v?'有効':'無効';
+ const rows=[['GPS L5有効化',!diag?.l5_enable_attempted?'変更なし／未確認':diag.l5_enable_verified?'読戻し確認済み':diag.l5_enable_failed?'応答失敗・設定を確認':diag.l5_enable_ack?'応答あり・読戻し待ち':'応答待ち'],['GPS L5設定／追尾',`${enabled(diag?.gps_l5_enabled)} / ${diag?.tracked_gps_l5??'不明'}信号`],['Galileo E1／E5a設定',`${enabled(diag?.galileo_e1_enabled)} / ${enabled(diag?.galileo_e5a_enabled)}`],['2周波で位相を使用中のGalileo',diag?.galileo_dual_phase_used??'不明'],['受信機のRTK動作設定',diag?.dgnss_mode===3?'FIXを試行':diag?.dgnss_mode===2?'Floatのみ':'不明'],['受信機での補正採用',diag?.rtcm_status_fresh?`${diag.rtcm_used}件採用 / ${diag.rtcm_unused}件不採用 / ${diag.rtcm_unknown}件不明`:'未取得／更新途絶'],['保存待ち／最大使用量',p?`${p.queue_bytes??'不明'} / ${p.queue_high_water_bytes??'不明'} byte`:'不明'],['キュー投入時の欠落（観測／航法／その他）',p?`${p.enqueue_dropped_rawx??'不明'} / ${p.enqueue_dropped_sfrbx??'不明'} / ${p.enqueue_dropped_other??'不明'}`:'不明'],['PPK保存',p?.recording?'記録中':'停止／SD未認識'],['生観測 RAWX',p?.rawx_saved??'不明'],['航法データ SFRBX',p?.sfrbx_saved??'不明'],['保存欠落',p?.dropped??'不明'],['UART欠落／UBXエラー',g?`${g.uart_overflows} / ${g.ubx_errors}`:'不明'],['生観測ファイル',p?.file||'未作成'],['補正ファイル',p?.rtcm_file||'未作成'],['設定・品質ログ',p?.meta_file||'未作成']];
+ el('gnssPpkStatus').replaceChildren(...rows.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=String(v);return [dt,dd]}));
+ if(r?.table_ready)loadGnssStations(r);
+}
+// GNSS_RTK_END
+
+
+// MAG_CALIBRATION_BEGIN
+let magExpiry;
+function renderMag(c){
+ clearTimeout(magExpiry);if(c)magExpiry=setTimeout(()=>renderMag(null),5000);
+ el('magCompact').textContent=!c?'状態不明':c.error?'異常：'+c.error:c.active?'校正中':c.loaded&&c.enabled?'SD保存済み・省略可':c.saved?'保存済み':c.enabled?'補正適用中':'待機中';el('magCompact').className='compact'+(c?.error?' bad':'');
+ const save=el('magSave');save.disabled=!c?.ready||c?.saved;el('magStart').disabled=!!c?.active;el('magReset').disabled=!!c?.active;
+ if(!c){el('magState').textContent='通信途絶・磁気校正状態不明';el('magProgress').replaceChildren();el('magChecks').replaceChildren();el('magAdvice').textContent='判定不明。親機へ再接続してください。';el('magAdvice').className='bad';return;}
+ el('magState').textContent=(!c.present?'LIS3MDL未接続':c.active?'校正中・親機記録停止中':'待機／校正終了')+' · '+(c.saved?'保存・適用済み':c.ready?'保存可能':c.enabled?'保存済み補正を適用中':'未校正')+(c.saturated?' · センサ飽和':'')+(c.error?' · '+c.error:'');
+ const vec=a=>a.map(x=>Number.isFinite(x)?x.toFixed(2):'不明').join(' / ');const covered=c.octants.filter(x=>x>=5).length;
+ const rows=[['取得',c.samples+' / 200 サンプル・'+c.elapsed_s+' 秒'],['回転方向',covered+' / 8 方向'],['XYZ変化幅',vec(c.span_ut)+' µT'],['飽和／除外',c.saturated_samples+' / '+c.rejected],['半径のばらつき',(c.radius_cv*100).toFixed(1)+' %'],['生のXYZ',vec(c.raw_ut)+' µT'],['補正後のXYZ',vec(c.corrected_ut)+' µT'],['補正オフセット',vec(c.offset_ut)+' µT'],['補正倍率',vec(c.scale)],['保存ファイル',c.file||'未保存']];
+ const spans=Array.isArray(c.span_ut)&&c.span_ut.length===3&&c.span_ut.every(v=>Number.isFinite(v)&&v>=30&&v<=200);
+ const fit=c.fit_evaluated===true||(c.fit_evaluated===undefined&&spans&&c.samples>0);
+ const checks=[['センサ接続',c.present===true,'接続・電源を確認'],['データ更新',c.fresh===true,'新しいデータを待つ'],['測定時間',Number.isFinite(c.elapsed_s)&&c.elapsed_s>=20&&c.elapsed_s<180,'20秒以上、3分未満'],['サンプル数',c.samples>=200,'200点以上'],['XYZの変化幅',spans,'各軸30〜200 µT。全方向へ回す'],['方向の広がり',covered===8,'全8方向に各5点以上'],['飽和履歴',c.saturated_samples===0&&!c.saturated,'飽和あり。磁気源から離し終了・再開始'],['半径のばらつき',fit&&Number.isFinite(c.radius_cv)&&c.radius_cv<=.15,fit?'15%以下になるよう全方向へ回す':'変化幅が揃ってから評価'],['半径の整合',c.fit_evaluated===true&&c.radius_match===true,c.fit_evaluated===undefined?'詳細未対応。最終の装置判定で確認':!fit?'変化幅が揃ってから評価':'整合不足。全方向へ回す']];
+ el('magChecks').replaceChildren(...checks.flatMap(([k,ok,hint])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=!c.active?'測定中に判定':ok?'通過':hint;dd.className=c.active&&ok?'good':'';return[dt,dd]}));
+ const missing=checks.filter(([,ok])=>!ok).map(([k])=>k);
+ el('magAdvice').textContent=c.loaded&&c.enabled&&!c.active&&!c.error?'SD保存済みの補正を適用中。この校正は省略できます。':c.error?'操作エラー：'+c.error:c.saved?'保存・適用済み。校正を終了してください。':!c.active?'校正を開始すると保存条件を確認できます。':c.saturated_samples>0||c.saturated?'飽和を検出。磁気源から離して終了・再開始してください。':!c.present||!c.fresh?'データが正常に更新されていません。接続・電源を確認してください。':c.ready?'保存条件を通過。SDへ保存・適用してください。':missing.length?'不足／未確認：'+missing.join('、')+'。下の条件を確認してください。':'表示条件は通過。装置の最終判定を待ってください。';
+ el('magAdvice').className=c.error||c.saturated_samples>0||c.saturated||!c.present||!c.fresh?'bad':c.ready||c.saved?'good':'';
+ el('magProgress').replaceChildren(...rows.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return [dt,dd]}));
+}
+async function magAction(action){try{const r=await fetch('/api/mag/'+action,{method:'POST',headers:{'X-Aqua-Control':'1'},signal:AbortSignal.timeout(5000)});const v=await r.json();renderMag(v.calibration);if(!r.ok||!v.ok)throw Error(v.calibration?.error||'操作に失敗しました');}catch(e){el('magState').textContent=e.message;el('magAdvice').textContent='操作失敗／結果未確認：'+e.message+'。最新の状態と保存結果を確認してください。';el('magAdvice').className='bad';el('magSave').disabled=true;}}
+el('magStart').onclick=()=>magAction('start');el('magSave').onclick=()=>magAction('save');el('magEnd').onclick=()=>magAction('end');el('magReset').onclick=()=>magAction('reset');
+// MAG_CALIBRATION_END
+
+
+
+// PARENT_SET_BEGIN
+let parentSetExpiry;
+function renderParentSet(c){
+ clearTimeout(parentSetExpiry);el('parentSetSave').disabled=!c?.can_save;
+ const status=!c?'通信途絶・校正セットの状態不明':(c.loaded?'保存番号 '+c.generation:'未保存')+' · 個別校正 '+(c.calibrations_match?'一致':'未適用／不一致／未取得')+' · IMU #'+c.imu_calibration+' / 磁気 #'+c.mag_calibration+(c.restore_error?' · 復元エラーあり':'');
+ el('parentSetStatus').textContent=status;el('parentSetCompact').textContent=status;el('parentSetCompact').className='compact'+(c?.restore_error?' bad':'');
+ if(c)parentSetExpiry=setTimeout(()=>renderParentSet(null),5000);
+}
+el('parentSetLoad').onclick=async()=>{try{const r=await fetch('/api/parent-calibration',{signal:AbortSignal.timeout(3000)});if(!r.ok)throw Error('読み直しに失敗しました');renderParentSet(await r.json());el('parentSetMessage').className='';el('parentSetMessage').textContent='保存状態を読み直しました'}catch(e){el('parentSetMessage').textContent=e.message;el('parentSetMessage').className='bad';renderParentSet(null)}};
+el('parentSetSave').onclick=async()=>{el('parentSetSave').disabled=true;try{const result=await post('/api/parent-calibration/save',new URLSearchParams({reference_only:'1'}).toString());el('parentSetMessage').textContent=result.message;el('parentSetMessage').className='';await el('parentSetLoad').onclick();}catch(e){el('parentSetMessage').textContent=e.message;el('parentSetMessage').className='bad'}};
+// PARENT_SET_END
+
+
+// RANGE_CONSOLE_BEGIN
+let rangeConsoleState=null;
+function renderRange(s){
+ rangeConsoleState=s;const r=s?.range_last,c=r?.calibration,has=r?.has_result===true;
+ const valid=has&&[2,3].includes(r.state)&&Number.isFinite(r.distance_m);
+ let label=!s?'通信途絶・最新状態不明':!has?'測距結果はまだありません':valid?(r.correction_applied?'補正後距離 ':'未補正の参考距離 ')+r.distance_m.toFixed(4)+' m':r.state===1?'受信なし':r.state===5?'比較器HIGH・有効エッジなし':r.state===4?'基準信号／取得異常':Number.isFinite(r.raw_m)?'補正後の値が負です。距離を採用できません':'受信待ち';
+ if(s&&has)label+=(s.ranging?' · 送信中':' · 送信停止・最後の結果')+' · '+(r.age_ms/1000).toFixed(1)+'秒前';
+ el('range').textContent=label;el('experimentRange').textContent=label;
+ const rows=has?[['結果番号',r.shot],['補正前の参考距離',Number.isFinite(r.raw_m)?r.raw_m.toFixed(4)+' m':'—'],['子機内の受信時刻差',r.tof_us+' µs'],['適用した補正',r.correction_applied?'保存番号 '+r.profile:'なし'],['精度検証','未検証']]:[];
+ el('rangeDetails').replaceChildren(...rows.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd]}));
+ el('rangeCalState').textContent=!c?'校正状態不明':c.error||(c.active?'測定中：'+c.count+' / '+c.target+'件 · 無効 '+c.rejected+'件':c.ready?'候補の算出完了。値を確認してSDへ保存してください。':c.matches?'保存済み補正を適用できます':c.restore_error?'保存値の復元に問題があります。補正は適用しません':c.loaded&&c.enabled?'周波数・パターンが一致しないため未適用':'補正は未適用');
+ el('rangeCalStats').textContent=c?'既知距離 '+c.known_m+' m · 音速 '+c.speed_m_s+' m/s · 固定遅延 '+c.offset_us+' µs · 中央値 '+c.median_us+' µs · 中央絶対偏差 '+c.mad_us+' µs · 採用 '+c.inliers+'件 · 保存番号 '+c.generation:'';
+ el('rangeCalStart').disabled=!s||s.link_age_ms>=3000||s.ranging||c?.active||!el('rangeFixed').checked;
+ el('rangeCalSave').disabled=!c?.ready||s?.ranging;el('rangeCalDisable').disabled=!c?.loaded||s?.ranging||c?.active;
+}
+async function rangeCalibration(op){
+ if(op==='start'){
+  const cm=Number(el('rangeKnownCm').value),speed=Number(el('rangeSpeed').value);
+  if(!el('rangeFixed').checked||!Number.isFinite(cm)||cm<=0||cm>3000||!Number.isFinite(speed)||speed<1300||speed>1700)throw Error('固定の確認・既知距離・音速の入力を確認してください');
+  op+='/' + Math.round(cm*10)+'/'+Math.round(speed*1000);
+ }
+ const r=await post('/api/range-calibration/'+op);renderRange({...(rangeConsoleState||{}),range_last:r.range_last,ranging:r.range_last?.calibration?.active===true});
+}
+for(const [id,op]of [['rangeCalStart','start'],['rangeCalSave','save'],['rangeCalCancel','cancel'],['rangeCalDisable','disable']])el(id).onclick=async()=>{try{await rangeCalibration(op)}catch(e){el('rangeCalState').textContent=e.message}};
+el('rangeFixed').onchange=()=>renderRange(rangeConsoleState);
+// RANGE_CONSOLE_END
+
+// BODY_CALIBRATION_BEGIN
+const bodyStates={p:null,c:null},bodyChecks={p:null,c:null},bodyExpiry={},bodyErrors={p:'',c:''};let bodyBusy=false,bodyLastPoll=0,bodyModeTouched=false;
+function showCalibrationWarning(reasons){return new Promise(resolve=>{const d=el('calibrationWarning');el('calibrationWarningReasons').textContent=reasons.join(' / ');let done=false;const finish=(ok,back)=>{if(done)return;done=true;d.close();if(back)selectTab('sensors',true);resolve(ok)};el('calibrationWarningBack').onclick=()=>finish(false,true);el('calibrationWarningContinue').onclick=()=>finish(true,false);d.oncancel=e=>{e.preventDefault();finish(false,false)};d.showModal();});}
+async function calibrationPreflight(targets,cameraRequired=false){const missing=[],blocked=[];for(const t of targets){try{const v=JSON.parse(text(await cmd(t,19)));renderBody(v,t);if(v.a)blocked.push((t==='p'?'親機':'子機')+'：機体姿勢の収録中');if(cameraRequired&&v.k!==1)blocked.push((t==='p'?'親機':'子機')+'：今回のカメラ動作収録が未完了（省略不可）');if(v.r!==1)missing.push((t==='p'?'親機':'子機')+'：個別校正・機体軸の未保存／不一致')}catch(e){(cameraRequired?blocked:missing).push((t==='p'?'親機':'子機')+'：'+(e.message||'状態不明'))}}if(blocked.length)throw Error(blocked.join(' / '));return !missing.length?0:await showCalibrationWarning(missing)?0x43414c21:-1;}
+function renderParentPreparation(s){
+ el('parentPreparation').textContent=!s?'通信途絶・準備状態不明':!s.spresense?.link_fresh?'親機：Spresenseの通信が未確認です。手順5で原因と必要な操作を確認してください。':'親機の準備条件を確認できます。手順5の条件一覧で必要な操作を進めてください。';
+}
+async function prepareParentCapture(){selectTab('sensors',true);el('bodyPanel').open=true;await bodyCommand(19);}
+async function startExperiment(fresh){const approval=await calibrationPreflight(['p','c']);if(approval<0)throw Error('開始を中止しました');if(fresh)await stopBoth();await both(3,approval);selectTab('sensors',true);el('bodyPanel').open=true;el('bodyMessage').textContent='通常記録の準備ができました。カメラ撮影を開始し、動画との時刻合わせを行う場合は親機・子機それぞれの動作を収録してください。測距送信・ゲイン確認は未完了でも開始できます。';}
+async function startRangeChecked(){await post('/api/range/start');}
+function renderBody(v,t='p',diagnostic){
+ if(diagnostic!==undefined)bodyChecks[t]=diagnostic;if(!v)bodyChecks[t]=null;
+ clearTimeout(bodyExpiry[t]);bodyStates[t]=v;if(v)bodyExpiry[t]=setTimeout(()=>renderBody(null,t),5000);drawBody();
+}
+const bodyIssueText=[
+ ['別の姿勢収録が進行中です。完了または中止してください。',''],
+ ['対象機体のSDが記録可能な状態ではありません。ログ・SDで現在のエラーを確認してください。','logs'],
+ ['対象機体の通常ログが停止中です。下の「親機／子機のログ記録を開始」を押してください。',''],
+ ['記録停止の処理中です。完了後に状態を更新してください。',''],
+ ['ログの転送中です。回収を終えてから再試行してください。','logs'],
+ ['測距中です。測距を停止してください。','stop'],
+ ['個別校正モードが動作中です。対象の個別校正欄で終了してください。','sensors'],
+ ['IMUの補正保存・適用を確認できません。親機は手順1、子機は手順3を確認してください。','imu'],
+ ['磁気の補正保存・適用を確認できません。親機は手順2、子機は手順3の保存応答を確認してください。','mag'],
+ ['親機校正セットが未保存・不一致、または復元エラーです。手順4で確認してください。保存には親機とSpresenseの記録停止が必要です。','set'],
+ ['Spresenseとの通信が途絶えています。接続と電源を先に確認してください。補正の適用・記録・PPS/UTC・IMU時刻・親機セットの一致も未確認です。通信復帰後に再判定します。','sensors'],
+ ['Spresenseの通常記録が停止中です。「Spresenseのログ記録を開始」を押してください。',''],
+ ['SpresenseのPPSが未成立です。時刻・位置で確認してください。','clock'],
+ ['SpresenseのGPS/PPS UTC対応が未成立です。時刻・位置で確認してください。','clock'],
+ ['SpresenseのIMUサンプル時刻が未成立です。時刻・位置で確認してください。','clock'],
+ ['親機のGPS PPSによるUTCが未成立です。受信・PPSの状態を確認してください。RTCやPC時刻では開始できません。','clock'],
+ ['子機IMUの新しいデータを取得できません。BNO085の接続・電源を確認してください。','imu'],
+ ['再利用できる軸変換がありません。初回の4姿勢＋動作を選択してください。',''],
+ ['収録ファイルを新規作成できませんでした。ログ・SDでカードと空き容量を確認してください。','logs'],
+ ['収録ファイルへの書込み・同期に失敗しました。SDの状態を確認してください。','logs'],
+ ['収録が15分を超えたため中止しました。準備を確認して新しい収録を開始してください。',''],
+ ['個別校正の参照番号が収録途中で変化しました。補正の適用を確認してやり直してください。','sensors']
+];
+function bodyVisibleIssue(mask,i){return !!((Number(mask)>>>i)&1)&&!((Number(mask)&1024)&&[7,9,11,12,13,14].includes(i));}
+function bodyReasons(mask){return bodyIssueText.filter((_,i)=>bodyVisibleIssue(mask,i)).map(v=>v[0]);}
+function bodyNavigate(where){
+ if(where==='stop')return action(async()=>{await rangeStop();await bodyCommand(19)});
+ const panels={imu:el('bodyTarget').value==='p'?'sprCalibrationPanel':'bnoPanel',mag:el('bodyTarget').value==='p'?'magPanel':'bnoPanel',set:'parentSetPanel'};
+ selectTab(['clock','logs'].includes(where)?where:'sensors',true);
+ const panel=panels[where];if(panel&&document.getElementById(panel)){el(panel).open=true;el(panel).scrollIntoView({block:'start'});}
+}
+function drawBody(){
+ const target=el('bodyTarget').value||'p',c=bodyStates[target],check=bodyChecks[target];
+ if(!bodyModeTouched)el('bodyMode').value=c?.a?(c.o===16?'1':'0'):c?.r===1?'1':'0';
+ const cameraOnly=el('bodyMode').value==='1',unavailable=bodyBusy||busy||!c||(target==='c'&&!overviewChildConnected);
+ const mask=check?Number(check.x)|(cameraOnly&&check.y!==1?131072:0):null;
+ const axisText=['軸合わせ結果はまだありません。初回の4姿勢＋動作を収録できます。','保存済みの軸変換と個別校正の参照が一致しています。','保存済み軸の参照が不一致です。初回の4姿勢＋動作を収録してください。','保存済み軸の復元に問題があります。SDを確認してください。'];
+ el('bodyAxes').textContent='軸合わせ結果：'+(!c?'通信不明のため確認できません':(c.g&&(check?.x&1024)?'Spresenseとの通信がないため参照一致を確認できません。通信復帰後に確認してください。':axisText[check?.y??(c.g?2:0)]));
+ el('bodyState').textContent=!c?'収録状態不明：通信を確認し、状態を更新してください。停止したとは判断できません。':c.a?'姿勢収録中（解析前）':check?.z===2?'収録完了：初回はPC解析・結果保存へ進んでください。':check?.z===3?'収録中止：ログは残っています。原因を確認してください。':'収録していません：下の準備条件を確認してください。';
+ el('bodyMessage').textContent=bodyErrors[target]||(check?.z===3&&check.l?'収録を中止しました。\n'+bodyReasons(check.l).join('\n'):'');el('bodyMessage').className='body-result bad';
+ el('bodyMode').disabled=bodyBusy||!!c?.a;el('bodyMode').querySelector('option[value="1"]').disabled=!c||(!c.r&&!c.a);
+ el('bodyReuseNote').textContent=cameraOnly?'保存済み軸を再利用し、今回の撮影に対応する区間5だけを収録します。':'初回・取付変更時は4姿勢と動作を収録します。軸未保存は開始を妨げません。';
+ const entries=c?[['収録番号',c.c],['記録済み区間',Array.from({length:5},(_,i)=>c.m&(1<<i)?String(i+1):null).filter(Boolean).join('、')||'なし'],['軸変換保存番号',c.g||'未保存'],['今回のカメラ用動作',c.k?'完了':'未完了'],['過去クリップの時刻変換',c.t?'保存あり（今回への流用不可）':'なし']]:[];
+ el('bodyDetails').replaceChildren(...entries.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;return[dt,dd]}));
+ el('bodyRequirementsSummary').textContent=!c?'通信状態を確認できません。状態を更新してください。':!check?'詳細な開始条件を取得できません。状態を更新してください。旧ファームでは親子の更新が必要です。':c.a?'収録中です。通常ログを止めず、下の区間操作へ進んでください。':mask?'次の条件が不足しています。各項目を解消してから開始してください。':'本体の開始条件を満たしています。カメラを撮影開始し、姿勢収録を開始してください。';
+ el('bodyRequirements').replaceChildren(...bodyIssueText.flatMap(([message,where],i)=>{
+  if(mask===null||c?.a||!bodyVisibleIssue(mask,i))return[];
+  const li=document.createElement('li');li.textContent=message;
+  if(where){const button=document.createElement('button');button.textContent=where==='stop'?'測距を停止':'該当画面を開く';button.disabled=bodyBusy;button.onclick=()=>bodyNavigate(where);li.append(button);}return[li];
+ }));
+ el('bodyPrepareLog').textContent=(target==='p'?'親機':'子機')+'のログ記録を開始';
+ el('bodyPrepareLog').disabled=unavailable||!!c?.a;el('bodyPrepareSpr').hidden=target!=='p';el('bodyPrepareSpr').disabled=unavailable||!!c?.a;
+ el('bodyRefresh').disabled=bodyBusy;
+ el('bodyStart').disabled=unavailable||!!c?.a||!check||!!mask;
+ el('bodyStartReason').textContent=bodyBusy?'操作結果を確認中です。':!c?'通信状態不明のため開始できません。':c.a?'すでに収録中です。下の区間操作へ進んでください。':!check?'開始条件が不明です。「準備・収録状態を更新」を押してください。':mask?'開始できません。上の不足条件を解消してください。':'開始可能です。下のボタン操作が使えるのは、姿勢収録の開始後です。';
+ el('bodyRecording').hidden=!c?.a;
+ const required=c?.o||(cameraOnly?16:31);let next=Array.from({length:5},(_,i)=>i+1).find(i=>(required&(1<<(i-1)))&&!(c?.m&(1<<(i-1))));
+ if(c?.p)next=c.p;el('bodyPhase').value=String(next||5);el('bodyPhase').disabled=true;
+ const done=c&&c.m===required&&!c.p,elapsed=check?.e??0;
+ el('bodyPhaseBegin').disabled=unavailable||!c?.a||!!c?.p||done;
+ el('bodyPhaseEnd').disabled=unavailable||!c?.a||!c?.p||!check||elapsed<5||(c.p===5&&c.q!==2);
+ el('bodyFinish').disabled=unavailable||!c?.a||!done;el('bodyCancel').disabled=unavailable||!c?.a;el('bodyImport').disabled=unavailable||!!c?.a;
+ const poses=['','水平・前向きの基準姿勢で静止してください。','基準姿勢へ戻してから、機首を上へ90度向けて静止してください。','基準姿勢へ戻してから、右側を上へ90度向けて静止してください。','基準姿勢へ戻してから、機尾を上へ90度向けて静止してください。','カメラの撮影を続けながら、不規則に機体を回してください。'];
+ el('bodyNext').textContent=!c?'通信状態不明：区間操作はできません。':!c.a?'姿勢収録の開始後に、次の姿勢を案内します。':done?'全区間を記録しました。「全区間の収録を完了」を押してください。':'区間'+next+'／'+(required===16?'動作のみ':'5')+'：'+poses[next];
+ el('bodyProgress').max=required===16?1:5;el('bodyProgress').value=Array.from({length:5},(_,i)=>(c?.m>>i)&1).reduce((a,b)=>a+b,0);
+ el('bodyPhaseReason').textContent=bodyBusy?'操作結果を確認中です。':!c?'通信状態不明のため操作できません。':!c.a?'まだ収録中ではありません。上の準備条件を確認して姿勢収録を開始してください。':done?'全区間を記録済みです。収録を完了してください。':!c.p?'姿勢を作って静止し、「この姿勢の記録を開始」を押してください。':!check?'経過時間を確認できません。状態を更新してください。':c.p===5?'30秒以上の動作とIMU更新が必要です。下の検出状況を確認してください。':elapsed<5?'記録中：'+elapsed+'秒。あと'+(5-elapsed)+'秒以上、静止を続けてください。':'記録中：'+elapsed+'秒。静止を保ったまま「この姿勢の記録を終了」を押してください。';
+ const sec=Number(c?.s||0);
+ el('bodyMotionGuide').textContent=c?.a&&c.p===5?(sec<10?'① 機首を左右へ向けてください。':sec<20?'② 機首を上げ下げしてください。':'③ 左右へ傾けてください。途中で少し止め、不規則な動きを混ぜます。'):'';
+ el('bodyMotionCheck').textContent=c?.a&&c.p===5?sec+'秒／30秒以上 · '+(!c.q?'IMU更新待ち':c.d?'動きを検出しています':'静止中：機体を回してください。')+(c.q===2?' · 区間を終了できます。':' · 終了条件を確認中'):'';
+ const steps=['同じ場所・基準方向を保ち、各姿勢へ移る前に水平姿勢へ戻します。','区間1〜4は静止→記録開始→5秒以上保持→記録終了の順です。','区間5は30秒以上、画面の案内に沿って不規則に動かします。Action 6はEIS OFF・Wideを確認してください。','初回は収録後にPC解析・結果保存が必要です。撮影後の時刻照合は別処理です。'];
+ el('bodyWorkflowSteps').replaceChildren(...steps.map(text=>{const li=document.createElement('li');li.textContent=text;return li}));
+}
+async function fetchBodyCheck(t){
+ try{return JSON.parse(text(await cmd(t,22)))}catch(e){return null}
+}
+async function bodyCommand(op,arg=0,name=''){
+ if(bodyBusy)return;bodyBusy=true;const t=el('bodyTarget').value;drawBody();
+ try{
+  const r=await cmd(t,op,arg,name),v=JSON.parse(text(r)),check=await fetchBodyCheck(t);renderBody(v,t,check);
+  if(op!==19)bodyErrors[t]='';
+  if(op===17)el('bodyLogResult').textContent='姿勢収録を開始しました。下の区間案内へ進んでください。';
+ }catch(e){
+  if(e.control?.hex){try{renderBody(JSON.parse(text(e.control)),t,await fetchBodyCheck(t));}catch(_){renderBody(null,t)}}else renderBody(null,t);
+  const reasons=op===17?bodyReasons(e.control?.arg):[];
+  if(op!==19||!bodyErrors[t])bodyErrors[t]=(op===17?'姿勢収録を開始できませんでした。':op===18?'区間を記録できませんでした。姿勢・経過時間・動きの条件を確認してください。':'操作に失敗しました。')+'\n'+(reasons.length?reasons.join('\n'):e.message)+(op===17&&!reasons.length?'\n詳細な拒否理由を取得できません。「準備・収録状態を更新」で条件を確認してください。':'');
+ }finally{bodyBusy=false;drawBody()}
+}
+async function pollBody(linked){
+ if(selectedTab!=='sensors'||busy||bodyBusy||!linked||el('bodyTarget').value!=='c'||Date.now()-bodyLastPoll<2000)return;
+ bodyLastPoll=Date.now();await bodyCommand(19);
+}
+async function prepareBodyLog(){
+ if(bodyBusy||busy)return;bodyBusy=true;const t=el('bodyTarget').value;drawBody();
+ try{
+  const state=JSON.parse(text(await cmd(t,19)));if(state.a)throw Error('姿勢収録中です。先に完了または中止してください。');
+  await rangeStop();await cmd(t,3,0x43414c21);
+  el('bodyLogResult').textContent=(t==='p'?'親機':'子機')+'の通常ログを開始しました。'+(t==='p'?'Spresenseのログも別に開始してください。':'カメラ撮影を開始してください。');
+ }catch(e){el('bodyLogResult').textContent='通常ログの開始に失敗：'+e.message;}
+ finally{bodyBusy=false;await bodyCommand(19)}
+}
+async function prepareBodySpr(){
+ if(bodyBusy||busy)return;bodyBusy=true;drawBody();
+ try{const state=JSON.parse(text(await cmd('p',19)));if(state.a)throw Error('姿勢収録中は操作できません。');await post('/api/spresense/start');el('bodyLogResult').textContent='Spresenseへ開始を要求しました。下の条件一覧で記録開始の成立を確認してください。';}
+ catch(e){el('bodyLogResult').textContent='Spresense記録の開始に失敗：'+e.message;}
+ finally{bodyBusy=false;await bodyCommand(19)}
+}
+el('bodyTarget').onchange=()=>{bodyModeTouched=false;el('bodyLogResult').textContent='';drawBody();bodyLastPoll=0;bodyCommand(19)};
+el('bodyMode').onchange=()=>{bodyModeTouched=true;drawBody()};
+el('bodyPrepareLog').onclick=prepareBodyLog;el('bodyPrepareSpr').onclick=prepareBodySpr;
+el('bodyRefresh').onclick=()=>bodyCommand(19);el('bodyStart').onclick=()=>bodyCommand(17,el('bodyMode').value==='1'?1:0);
+el('bodyPhaseBegin').onclick=()=>bodyCommand(18,Number(el('bodyPhase').value));el('bodyPhaseEnd').onclick=()=>bodyCommand(18,256+Number(el('bodyPhase').value));el('bodyFinish').onclick=()=>bodyCommand(20);el('bodyCancel').onclick=()=>bodyCommand(20,1);
+el('bodyImport').onclick=async()=>{try{const file=el('bodySolution').files[0];if(!file||file.size>32768)throw Error('解析結果JSONを選んでください');const v=JSON.parse(await file.text());const ints=['capture','boot','imu','mag'];if(v.format!=='AquaBeaconBodySolution1'||ints.some(k=>!Number.isInteger(v[k])||v[k]<=0||v[k]>0xffffffff)||v.axes!==3||![0,1].includes(v.camera))throw Error('機体姿勢の解析結果ではありません');for(const q of [v.imu_q,v.mag_q])if(!Array.isArray(q)||q.length!==4||q.some(x=>!Number.isFinite(x))||Math.abs(q.reduce((n,x)=>n+x*x,0)-1)>.001)throw Error('軸変換が不正です');if(!Number.isFinite(v.camera_scale)||v.camera_scale<.999||v.camera_scale>1.001||!Number.isFinite(v.camera_offset_us)||Math.abs(v.camera_offset_us)>4e15)throw Error('時刻変換が不正です');const b=new ArrayBuffer(68),d=new DataView(b);ints.forEach((k,i)=>d.setUint32(i*4,v[k],true));d.setUint8(16,v.axes);d.setUint8(17,v.camera);[...v.imu_q,...v.mag_q].forEach((x,i)=>d.setFloat32(20+i*4,x,true));d.setFloat64(52,v.camera_scale,true);d.setFloat64(60,v.camera_offset_us,true);await bodyCommand(21,0,Array.from(new Uint8Array(b),x=>x.toString(16).padStart(2,'0')).join(''));}catch(e){bodyErrors[el('bodyTarget').value]=e.message;drawBody()}};
+// BODY_CALIBRATION_END
+
+let sprExpiry,sprRequested=0,sprAllowDisable=false;
+const sprResults=['完了','処理中／停止条件を確認','要求が無効','未対応','失敗','受付済み','応答なし・実行結果不明'];
+function renderSprLink(s,stale=false){
+ clearTimeout(sprExpiry);if(!stale)sprExpiry=setTimeout(()=>renderSprLink(null,true),5000);
+ const fresh=!stale&&s?.link_fresh;
+ el('sprStatus').textContent=fresh?'Spresenseと通信中':'通信なし・状態不明';el('sprCalibrationCompact').textContent=!fresh?'通信なし・校正状態不明':s.calibration_save_error||s.calibration_restore_error||s.calibration===6?'校正エラーあり':s.calibration_applied&&s.calibration_generation>0?'SD保存済み・省略可':s.calibration===5?'保存済み':s.calibration>=1&&s.calibration<=4?'校正中':'待機中';el('sprCalibrationCompact').className='compact'+(fresh&&(s.calibration_save_error||s.calibration_restore_error||s.calibration===6)?' bad':'');
+ const opName={2:'記録停止',3:'記録再開',4:'再起動',5:'校正開始',6:'校正状態',7:'補正解除',8:'姿勢測定',9:'校正保存',10:'校正終了'};
+ const sdState={RECORDING:'記録中',RECOVERING:'自動復旧待ち',ERROR:'異常・再開操作が必要',STOPPED:'停止中',UNKNOWN:'詳細未取得'};
+ const sdFailure={NONE:'なし',MOUNT:'SD未認識・マウント',NAMES:'ファイル名の空きなし',PROBE_OPEN:'検査ファイル作成',PROBE_IO:'検査書込み・読戻し',LOG_OPEN:'ログ作成',HEADER:'ヘッダー保存・同期',WRITE:'ログ書込み',SYNC:'ログ同期',FORMATTER:'整形処理',UNKNOWN:'詳細未取得'};
+ const value=k=>fresh?(s[k]??'未取得'):'不明';
+ const saving=fresh?(s.recording&&s.sd_ok?'SDへ記録中':s.sd_diagnostics?(sdState[s.sd_state]||'不明'):'停止／SD未使用'):'通信なし・保存状態不明';
+ el('sprOverview').textContent=saving;
+ const rows=[['記録',saving],['SD',fresh?(s.sd_ok?'書込み・読戻し確認済み':'未使用／異常'):'不明'],['書込み済み行数',value('sd_rows')],['同期済み行数',fresh&&s.sd_diagnostics?value('sd_synced_rows'):'不明'],['SDエラー累計',value('sd_errors')],['最後のSD障害',fresh&&s.sd_diagnostics?(sdFailure[s.sd_failure]||'不明')+' (errno '+s.sd_detail+')':'不明'],['SD復旧試行／成功',fresh&&s.sd_diagnostics?s.sd_attempts+' / '+s.sd_recoveries:'不明'],['IMU',fresh?(s.imu_ok?'受信中':'未取得／異常'):'不明'],['IMU取得サンプル',value('imu_samples')],['IMUエラー',value('imu_errors')],['IMU欠落・キュー廃棄',value('imu_gaps')],['PPS入力 D02',fresh&&s.time_diagnostics?(s.pps_connected?'検出中 · '+s.pps_count+'回':'未検出／途絶'):'不明'],['PPSとUTCの対応',fresh&&s.time_diagnostics?(s.pps_paired?'対応成立・精度未検証':'未成立'):'不明'],['IMUサンプル時刻',fresh&&s.time_diagnostics?(s.imu_time_ready?'内部カウンタから推定中':'準備中／取得異常'):'不明'],['参考UTC',fresh?(s.time_valid?'共有中・精度未検証':'未同期'):'不明'],['受信パケット',value('packets')],['CRCエラー',value('crc_errors')],['応答期限切れ',value('timeouts')],['直近の操作',fresh&&s.last_operation?(opName[s.last_operation]||'操作')+'：'+(sprResults[s.last_result]||'不明'):'未取得']];
+ for(const id of ['sprDetails','sprOverviewDetails'])el(id).replaceChildren(...rows.flatMap(([a,b])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=a;dd.textContent=b;return[dt,dd]}));
+ const active=fresh&&[1,2,3,4].includes(s.calibration);sprAllowDisable=!!(fresh&&!s.recording&&!active&&!s.command_pending&&s.calibration_applied);el('sprDisableConfirm').disabled=!sprAllowDisable;if(!sprAllowDisable)el('sprDisableConfirm').checked=false;el('sprNext').disabled=!(fresh&&!active&&!s.command_pending&&s.calibration_applied&&s.calibration_generation>0&&!s.calibration_save_error&&!s.calibration_restore_error);
+ el('sprCalibration').textContent=fresh?(['今回の6姿勢測定は未実施','次の姿勢を選んでください','静止測定中','姿勢・振動を確認中。静止すると再測定します','6姿勢完了。保存できます','保存済み','測定エラー。校正を終了してやり直してください'][s.calibration]||'不明')+' · 測定 '+(s.calibration_progress??0)+'% · 完了姿勢 '+Array.from({length:6},(_,i)=>(s.calibration_mask&(1<<i))?['＋X','−X','＋Y','−Y','＋Z','−Z'][i]:null).filter(Boolean).join('、')+' · 補正 '+(s.calibration_applied?'適用中':'未適用')+' · 保存番号 '+(s.calibration_generation??0)+(s.calibration_save_error?' · SD保存失敗':'')+(s.calibration_restore_error?' · 保存値の復元を確認してください':''):'校正状態不明';
+ const poses=['＋X','−X','＋Y','−Y','＋Z','−Z'],pose=fresh&&Number.isInteger(s.calibration_pose)&&s.calibration_pose<6?s.calibration_pose:-1;
+ const progress=el('sprCalibrationProgress');progress.hidden=!fresh||![2,3].includes(s.calibration)||s.imu_ok!==true;progress.value=fresh?Math.max(0,Math.min(100,Number(s.calibration_progress)||0)):0;
+ const reasons=fresh&&s.calibration_diagnostics?[[1,'データ欠落・間隔異常'],[2,'非数の測定値'],[4,'回転が大きい'],[8,'重力の大きさが範囲外'],[16,'選択した軸が上向きでない'],[32,'急な変化・振動'],[64,'取得点数不足'],[128,'測定区間のばらつきが大きい']].filter(([bit])=>s.calibration_rejection&bit).map(([,name])=>name):[];
+ const checks=fresh?poses.map((name,i)=>[name+'を上向き',(s.calibration_mask&(1<<i))?'測定条件を通過':pose===i?(s.calibration===3?'やり直し中':s.calibration===2?'静止判定・測定中':'測定停止'):!active&&s.calibration_applied&&s.calibration_generation>0&&!s.calibration_save_error&&!s.calibration_restore_error?'保存済み補正を使用':'未測定']):[];
+ if(fresh&&s.calibration_diagnostics){checks.push(['条件外サンプル・区間の回数',s.calibration_rejections+(s.calibration_rejections===65535?'以上':'')]);checks.push(['直近のやり直し理由',reasons.join('、')||'選択後のやり直しなし']);}
+ el('sprCalibrationChecks').replaceChildren(...checks.flatMap(([k,v])=>{const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=k;dd.textContent=v;dd.className=v==='測定条件を通過'?'good':'';return[dt,dd]}));
+ const restored=fresh&&s.calibration_applied&&s.calibration_generation>0&&!active&&!s.calibration_save_error&&!s.calibration_restore_error;const advice=restored?'SDの補正を復元・適用中です。この個別校正は省略できます。カメラ用動作収録は毎回必要です。':!fresh?'判定不明。Spresenseへ再接続してください。':s.calibration_save_error?'SD保存に失敗。以前の適用値を維持しています。SDの状態を確認してください。':s.calibration_restore_error?'保存値の復元に問題があります。SDと適用番号を確認してください。':s.calibration===6?'測定期限・係数の整合性などでエラー。校正を終了してやり直してください。':s.calibration===5?'保存済み。再起動後の補正復元を確認してください。':s.calibration===4?'全6姿勢の測定と係数チェックを通過。SDへ保存してください。':active&&s.imu_ok!==true?'IMUの最新取得を確認できません。接続とセンサ状態を確認してください。':s.calibration===1?'未測定の姿勢を上向きに置き、その姿勢の測定ボタンを押してください。':s.calibration===3?'やり直し中：'+(reasons.join('、')||'姿勢・動き・取得状態を確認（詳細診断は未取得）')+'。'+(pose>=0?poses[pose]+'を上向きにして':'向きを確認し')+'台の上で静止してください。':s.calibration===2?(pose>=0?poses[pose]+'を上向きに保ち、':'')+'整定と静止測定を続けてください。条件が崩れると最初から測り直します。':'校正を開始し、上向きにする姿勢を選んでください。';
+ el('sprCalibrationAdvice').textContent=advice;el('sprCalibrationAdvice').className=!fresh||s.calibration_save_error||s.calibration_restore_error||s.calibration===6?'bad':s.calibration===4||s.calibration===5?'good':'';
+ document.querySelectorAll('[data-spr]').forEach(b=>{
+  const op=b.dataset.spr;let disabled=!fresh||s?.command_pending;
+  if(fresh){if(op==='reset')disabled ||= s.recording||s.last_operation!==2||s.last_result!==0;
+   if(op==='start')disabled ||= active;
+   if(op==='calibration/start')disabled ||= s.recording||active;
+   if(op==='calibration/save')disabled ||= s.recording||s.calibration!==4;
+   if(op==='calibration/end')disabled ||= s.recording||(!active&&s.calibration!==5);
+   if(op==='calibration/clear')disabled ||= !sprAllowDisable||!el('sprDisableConfirm').checked;
+   if(op.startsWith('calibration/pose/')){const p=Number(op.split('/').pop());disabled ||= !active||s.calibration===4||Boolean(s.calibration_mask&(1<<p))||s.calibration_pose===p;}}
+  b.disabled=disabled;
+ });
+ if(sprRequested&&s?.command_id===sprRequested){el('sprMessage').textContent=sprResults[s.command_result]||'結果不明';el('sprMessage').className=[0,5].includes(s.command_result)?'':'bad';if(s.command_result!==5)sprRequested=0}
+}
+document.querySelectorAll('[data-spr]').forEach(b=>b.onclick=async()=>{b.disabled=true;try{let body='';if(b.dataset.spr==='calibration/clear'){if(!sprAllowDisable||!el('sprDisableConfirm').checked)throw Error('補正を無効にする確認が必要です');body='confirm_disable=1';el('sprDisableConfirm').checked=false;}if(b.dataset.spr==='calibration/start'){
+ const gravity=Number(el('sprGravity').value),latitude=Number(el('sprLatitude').value);
+ if(!el('sprLatitude').value.trim()||!Number.isFinite(gravity)||gravity<9.7||gravity>9.9||!Number.isFinite(latitude)||Math.abs(latitude)>90)throw Error('地点の重力値と緯度を入力してください');
+ body=new URLSearchParams({gravity:String(gravity),latitude:String(latitude)}).toString();}
+ const r=await post('/api/spresense/'+b.dataset.spr,body);sprRequested=r.command_id;el('sprMessage').className='';el('sprMessage').textContent='親機に受付済み。Spresenseの応答を待っています。'}catch(e){el('sprMessage').textContent=e.message;el('sprMessage').className='bad'}});
+
+el('sprDisableConfirm').onchange=()=>{document.querySelectorAll('[data-spr]').forEach(b=>{if(b.dataset.spr==='calibration/clear')b.disabled=!sprAllowDisable||!el('sprDisableConfirm').checked})};
+el('sprNext').onclick=()=>{if(el('sprNext').disabled)return;selectTab('sensors',true);el('sprCalibrationPanel').open=false;el('magPanel').open=true;el('magPanel').scrollIntoView({block:'start'});el('message').textContent='Spresenseの保存済み補正を維持して次へ進みました。磁気も保存済みで有効なら省略できます。';};
+async function tick(){if(busy){setTimeout(tick,1000);return;}try{const r=await fetch('/api/status',{signal:AbortSignal.timeout(5000)});if(!r.ok)throw Error();const s=await r.json();renderDeviceOverview(s);renderParentPreparation(s);el('connection').textContent='更新 '+new Date().toLocaleTimeString()+' · 子機 '+(s.link_age_ms<3000?'接続中':'応答なし');renderSprLink(s.spresense);renderMag(s.mag_calibration);renderParentSet(s.parent_calibration);renderBody(s.body_calibration,'p',s.body_check||null);renderGnssRtk(s);renderUtc(s);renderAcquisition(s);renderSdRecovery(s);renderPhone(s.phone);renderSpresense(s.gnss);render('parent',s.local,false,false);render('child',s.remote,s.link_age_ms>=3000,true);renderRange(s);el('timing').textContent='測定 #'+s.shot_seq+' · 測距基準: テザー受信エッジ · UTC用相対同期 '+(s.sync_ok?'成立':'未成立')+' · 同期推定不確かさ ±'+s.uncertainty_us+' µs';el('files').textContent='親機ログ '+s.log_file+' / '+s.health_file+' · SD '+s.sd_reason;await pollCalibration(s.link_age_ms<3000);await pollBody(s.link_age_ms<3000);}catch(e){renderDeviceOverview(null);renderParentPreparation(null);renderSprLink(null,true);renderCalibration(null);renderBody(null,'p');renderBody(null,'c');el('connection').textContent='親機との通信が途絶えました';el('sdRecoveryStatus').textContent='通信途絶・保存状態不明';renderMag(null);renderParentSet(null);renderGnssRtk(null);renderUtc(null);renderAcquisition(null);renderPhone(null,true);renderSpresense(null,true);render('parent',{},true,false);render('child',{},true,true);renderRange(null);}setTimeout(tick,1000)}tick();startPhone('time');</script></html>
+)AQWEB";
